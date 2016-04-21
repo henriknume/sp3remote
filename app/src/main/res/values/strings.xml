@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">sp3remote</string>
+    <string name="app__name">sp3remote</string>
+    <string name="info_button_text">Info</string>
+    <string name="show_date_button_text">Show Date</string>
+    <string name="logga_button_text">Logga</string>
+    <string name="show_lon_button_text">Lon</string>
+    <string name="up_button_text">Up</string>
+    <string name="show_lat_button_text">Lat</string>
+    <string name="left_button_text">Left</string>
+    <string name="stop_button_text">Stop</string>
+    <string name="right_button_text">Right</string>
+    <string name="auto_button_text">Run Auto</string>
+    <string name="set_date_button_text">Set Date</string>
 </resources>
