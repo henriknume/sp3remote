@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">sp3remote</string>
-    <string name="app__name">sp3remote</string>
     <string name="info_button_text">Info</string>
     <string name="show_date_button_text">Show Date</string>
     <string name="logga_button_text">Logga</string>
