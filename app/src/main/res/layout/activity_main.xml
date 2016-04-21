@@ -39,7 +39,7 @@ android:background="@color/foreground_material_light">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/info_button_text"
         android:id="@+id/info_button"
         android:layout_column="0"
         android:layout_weight="1" />
@@ -47,14 +47,14 @@ android:background="@color/foreground_material_light">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/date_button"
+        android:text="@string/show_date_button_text"
+        android:id="@+id/show_date_button"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/logga_button_text"
         android:id="@+id/logga_button"
         android:layout_weight="1" />
 </TableRow>
@@ -67,22 +67,22 @@ android:background="@color/foreground_material_light">
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/lon_button"
+        android:text="@string/show_lon_button_text"
+        android:id="@+id/show_lon_button"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/up_button_text"
         android:id="@+id/up_button"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/lat_button"
+        android:text="@string/show_lat_button_text"
+        android:id="@+id/show_lat_button"
         android:layout_weight="1" />
 </TableRow>
 
@@ -94,21 +94,21 @@ android:background="@color/foreground_material_light">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/left_button_text"
         android:id="@+id/left_button"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/stop_button_text"
         android:id="@+id/stop_button"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/right_button_text"
         android:id="@+id/right_button"
         android:layout_weight="1" />
 </TableRow>
@@ -121,21 +121,21 @@ android:background="@color/foreground_material_light">
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/auto_button_text"
         android:id="@+id/auto_button"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/down_button_text"
         android:id="@+id/down_button"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/set_date_button_text"
         android:id="@+id/set_date_button"
         android:layout_weight="1" />
 </TableRow>
