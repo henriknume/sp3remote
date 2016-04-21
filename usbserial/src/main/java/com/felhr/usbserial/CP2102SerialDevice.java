@@ -516,10 +516,20 @@ public class CP2102SerialDevice extends UsbSerialDevice
         if(!flowControlThread.isAlive())
             flowControlThread.start();
     }
+/*
+    Original method: no check for null pointer
 
     private void stopFlowControlThread()
     {
         flowControlThread.stopThread();
+        flowControlThread = null;
+    }
+*/
+
+    private void stopFlowControlThread()
+    {
+        if(flowControlThread != null)
+            flowControlThread.stopThread();
         flowControlThread = null;
     }
 
