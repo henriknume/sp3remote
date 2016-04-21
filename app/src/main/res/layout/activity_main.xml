@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/textView"
+            android:id="@+id/log_textview"
             android:textColor="#74f617" />
         </ScrollView>
     </TableRow>
