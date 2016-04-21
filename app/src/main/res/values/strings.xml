@@ -12,4 +12,5 @@
     <string name="down_button_text">Down</string>
     <string name="auto_button_text">Run Auto</string>
     <string name="set_date_button_text">Set Date</string>
+    <string name="clear_button_text">Clear</string>
 </resources>
