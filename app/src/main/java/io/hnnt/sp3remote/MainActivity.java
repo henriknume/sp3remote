@@ -26,6 +26,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+    /*
     @Bind (R.id.log_textview) TextView      logTextView;
     @Bind (R.id.info_button) Button         infoButton;
     @Bind (R.id.show_date_button) Button    showDateButton;
@@ -40,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
     @Bind (R.id.down_button) Button         downButton;
     @Bind (R.id.stop_button) Button         stopButton;
     @Bind (R.id.clear_button) Button        clearButton;
-
+*/
     private UsbService usbService;
     private MyHandler mHandler;
+
+    private TextView display;
 
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
@@ -61,8 +64,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
         mHandler = new MyHandler(this);
+
+        display = (TextView) findViewById(R.id.log_textview);
+
+        Button infoButton = (Button) findViewById(R.id.info_button);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String data = "info\r";
+                if (usbService != null) { // if UsbService was correctly binded, Send data
+                    //display.append(data);
+                    usbService.write(data.getBytes());
+                }
+            }
+        });
+
+        Button clearButton = (Button) findViewById(R.id.clear_button);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                display.setText("");
+            }
+        });
     }
 
     /*
@@ -146,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
                     String data = (String) msg.obj;
-                    mActivity.get().logTextView.append(data);
+                    mActivity.get().display.append(data);
                     break;
             }
         }
@@ -155,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
     /*
     *   Buttonlisteners
     */
+
+    /*
 
     @OnClick(R.id.info_button)
     public void onInfoButton() {
@@ -224,4 +251,5 @@ public class MainActivity extends AppCompatActivity {
     public void onClearButton() {
         logTextView.setText("");
     }
+    */
 }
