@@ -26,26 +26,22 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*
-    @Bind (R.id.log_textview) TextView      logTextView;
-    @Bind (R.id.info_button) Button         infoButton;
-    @Bind (R.id.show_date_button) Button    showDateButton;
-    @Bind (R.id.logga_button) Button        loggaButton;
-    @Bind (R.id.show_lon_button) Button     showLonButton;
-    @Bind (R.id.show_lat_button) Button     showLatButton;
-    @Bind (R.id.auto_button) Button         autoButton;
-    @Bind (R.id.set_date_button) Button     setDateButton;
-    @Bind (R.id.up_button) Button           upButton;
-    @Bind (R.id.left_button) Button         leftButton;
-    @Bind (R.id.right_button) Button        rightButton;
-    @Bind (R.id.down_button) Button         downButton;
-    @Bind (R.id.stop_button) Button         stopButton;
-    @Bind (R.id.clear_button) Button        clearButton;
-*/
+    private TextView logTextView;
+    private Button infoButton;
+    private Button showDateButton;
+    private Button loggaButton;
+    private Button showLonButton;
+    private Button showLatButton;
+    private Button autoButton;
+    private Button setDateButton;
+    private Button upButton;
+    private Button leftButton;
+    private Button rightButton;
+    private Button downButton;
+    private Button clearButton;
+
     private UsbService usbService;
     private MyHandler mHandler;
-
-    private TextView display;
 
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
@@ -64,30 +60,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //ButterKnife.bind(this);
         mHandler = new MyHandler(this);
-
-        display = (TextView) findViewById(R.id.log_textview);
-
-        Button infoButton = (Button) findViewById(R.id.info_button);
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String data = "info\r";
-                if (usbService != null) { // if UsbService was correctly binded, Send data
-                    //display.append(data);
-                    usbService.write(data.getBytes());
-                }
-            }
-        });
-
-        Button clearButton = (Button) findViewById(R.id.clear_button);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                display.setText("");
-            }
-        });
+        createButtonListeners();
     }
 
     /*
@@ -171,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
                     String data = (String) msg.obj;
-                    mActivity.get().display.append(data);
+                    mActivity.get().logTextView.append(data);
                     break;
             }
         }
@@ -181,75 +155,119 @@ public class MainActivity extends AppCompatActivity {
     *   Buttonlisteners
     */
 
-    /*
+    private void createButtonListeners() {
 
-    @OnClick(R.id.info_button)
-    public void onInfoButton() {
-        String command = "info\r";
-        if (usbService != null) { // if UsbService was correctly binded, Send command
-            logTextView.append("# " + command + "\n");
-            usbService.write(command.getBytes());
-        }
+        logTextView =    (TextView) findViewById(R.id.log_textview);
+        infoButton =       (Button) findViewById(R.id.info_button);
+        showDateButton =   (Button) findViewById(R.id.show_date_button);
+        loggaButton =      (Button) findViewById(R.id.logga_button);
+        showLonButton =    (Button) findViewById(R.id.show_lon_button);
+        showLatButton =    (Button) findViewById(R.id.show_lat_button);
+        autoButton =       (Button) findViewById(R.id.auto_button);
+        setDateButton =    (Button) findViewById(R.id.set_date_button);
+        upButton =         (Button) findViewById(R.id.up_button);
+        leftButton =       (Button) findViewById(R.id.left_button);
+        rightButton =      (Button) findViewById(R.id.right_button);
+        downButton =       (Button) findViewById(R.id.down_button);
+        clearButton =      (Button) findViewById(R.id.clear_button);
+
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<infoButton>");
+                String data = "info\r";
+                if (usbService != null) { // if UsbService was correctly binded, Send data
+                    logTextView.append("<usbService != null>");
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService == null>");
+                }
+            }
+        });
+
+        showDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<showDateButton>");
+            }
+        });
+
+        loggaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<loggaButton>");
+                String data = "logga\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
+            }
+        });
+
+        showLonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<showLonButton>");
+            }
+        });
+
+        showLatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<showLatButton>");
+            }
+        });
+
+        autoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<autoButton>");
+            }
+        });
+
+        setDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<setDateButton>");
+            }
+        });
+
+        upButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<upButton>");
+            }
+        });
+
+        leftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<leftButton>");
+            }
+        });
+
+        rightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<rightButton>");
+            }
+        });
+
+        downButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<downButton>");
+            }
+        });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.setText("");
+            }
+        });
     }
-
-    @OnClick(R.id.show_date_button)
-    public void onShowDateButton() {
-
-    }
-
-    @OnClick(R.id.logga_button)
-    public void onLoggaButton() {
-
-    }
-
-    @OnClick(R.id.show_lon_button)
-    public void onShowLonButton() {
-
-    }
-
-    @OnClick(R.id.show_lat_button)
-    public void onShowLatButton() {
-
-    }
-
-    @OnClick(R.id.auto_button)
-    public void onAutoButton() {
-
-    }
-
-    @OnClick(R.id.set_date_button)
-    public void onSetDateButton() {
-
-    }
-
-    @OnClick(R.id.up_button)
-    public void onUpButton() {
-
-    }
-
-    @OnClick(R.id.left_button)
-    public void onLeftButton() {
-
-    }
-
-    @OnClick(R.id.right_button)
-    public void onRightButton() {
-
-    }
-
-    @OnClick(R.id.down_button)
-    public void onDownButton() {
-
-    }
-
-    @OnClick(R.id.stop_button)
-    public void onStopButton() {
-
-    }
-
-    @OnClick(R.id.clear_button)
-    public void onClearButton() {
-        logTextView.setText("");
-    }
-    */
 }
