@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@android:color/holo_green_light"
-                android:id="@+id/textView" />
+                android:id="@+id/log_textview" />
         </ScrollView>
     </FrameLayout>
 
@@ -31,7 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="5">
+        android:layout_weight="3">
 
         <TableRow
             android:layout_width="match_parent"
@@ -127,6 +127,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/set_date_button_text"
                 android:id="@+id/set_date_button"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/clear_button_text"
+                android:id="@+id/clear_button"
                 android:layout_weight="1" />
         </TableRow>
     </TableLayout>
