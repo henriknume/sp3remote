@@ -1,133 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <TableRow
-        android:layout_width="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="io.hnnt.sp3remote.MainActivity"
-        android:layout_height="match_parent"
-        android:layout_weight="40">
+    android:layout_height="fill_parent"
+    tools:context="io.hnnt.sp3remote.MainActivity"
+    >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="3">
+
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/scrollView"
-            android:layout_span="3">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/log_textview"
-            android:textColor="#74f617" />
+            android:id="@+id/scrollView2"
+            android:layout_gravity="center" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/holo_green_light"
+                android:id="@+id/textView" />
         </ScrollView>
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_button_text"
-            android:id="@+id/info_button"
-            android:layout_column="0"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/show_date_button_text"
-            android:id="@+id/show_date_button"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/logga_button_text"
-            android:id="@+id/logga_button"
-            android:layout_weight="1" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0">
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/show_lon_button_text"
-            android:id="@+id/show_lon_button"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/up_button_text"
-            android:id="@+id/up_button"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/show_lat_button_text"
-            android:id="@+id/show_lat_button"
-            android:layout_weight="1" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/left_button_text"
-            android:id="@+id/left_button"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stop_button_text"
-            android:id="@+id/stop_button"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/right_button_text"
-            android:id="@+id/right_button"
-            android:layout_weight="1" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/auto_button_text"
-            android:id="@+id/auto_button"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/down_button_text"
-            android:id="@+id/down_button"
-            android:layout_weight="1" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/set_date_button_text"
-            android:id="@+id/set_date_button"
-            android:layout_weight="1" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/clear_button_text"
-            android:id="@+id/clear_button"
-            android:layout_weight="1" />
-    </TableRow>
-</TableLayout>
+    </FrameLayout>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="5">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_button_text"
+                android:id="@+id/info_button"
+                android:layout_column="0"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show_date_button_text"
+                android:id="@+id/show_date_button"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/logga_button_text"
+                android:id="@+id/logga_button"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_lon_button_text"
+                android:id="@+id/show_lon_button"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/up_button_text"
+                android:id="@+id/up_button"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show_lat_button_text"
+                android:id="@+id/show_lat_button"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/left_button_text"
+                android:id="@+id/left_button"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stop_button_text"
+                android:id="@+id/stop_button"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/right_button_text"
+                android:id="@+id/right_button"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_button_text"
+                android:id="@+id/auto_button"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/down_button_text"
+                android:id="@+id/down_button"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_date_button_text"
+                android:id="@+id/set_date_button"
+                android:layout_weight="1" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
+
+
