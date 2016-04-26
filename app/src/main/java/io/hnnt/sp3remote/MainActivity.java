@@ -1,5 +1,6 @@
 package io.hnnt.sp3remote;
 
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,7 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Set;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Button leftButton;
     private Button rightButton;
     private Button downButton;
+    private Button stopButton;
     private Button clearButton;
 
     private UsbService usbService;
@@ -46,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            logTextView.setText("onServiceConnected()");
             usbService = ((UsbService.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
+            logTextView.setText("onServiceDisconnected()");
             usbService = null;
         }
     };
@@ -169,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         leftButton =       (Button) findViewById(R.id.left_button);
         rightButton =      (Button) findViewById(R.id.right_button);
         downButton =       (Button) findViewById(R.id.down_button);
+        stopButton =       (Button) findViewById(R.id.stop_button);
         clearButton =      (Button) findViewById(R.id.clear_button);
 
         infoButton.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +200,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<showDateButton>");
+                String data = "date\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
@@ -211,6 +228,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<showLonButton>");
+                String data = "lon\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
@@ -218,6 +242,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<showLatButton>");
+                String data = "lat\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
@@ -225,6 +256,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<autoButton>");
+                String data = "run auto\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
@@ -232,13 +270,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<setDateButton>");
+                // format: [date YYYY-MM-DD HH:MM:SS\r]
+                SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+                String time = dateFormatGmt.format(new Date())+"";
+                String data = "date " + time + "\r";
+
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
+
+
         });
 
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logTextView.append("<upButton>");
+                String data = "run u\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
@@ -246,6 +305,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<leftButton>");
+                String data = "run l\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
@@ -253,6 +319,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<rightButton>");
+                String data = "run r\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
@@ -260,6 +333,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logTextView.append("<downButton>");
+                String data = "run d\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<stopButton>");
+                String data = "run stop\r";
+                if (usbService != null) {
+                    usbService.write(data.getBytes());
+                }
+                else{
+                    logTextView.append("<usbService:null>");
+                }
             }
         });
 
