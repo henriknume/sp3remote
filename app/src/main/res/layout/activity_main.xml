@@ -22,8 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@android:color/holo_green_light"
-                android:id="@+id/log_textview" />
+                android:id="@+id/log_textview"
+                android:textColor="@color/colorBlack" />
         </ScrollView>
     </FrameLayout>
 

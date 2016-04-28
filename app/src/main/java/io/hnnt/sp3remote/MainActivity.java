@@ -1,6 +1,5 @@
 package io.hnnt.sp3remote;
 
-import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,21 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.TimeZone;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -184,176 +176,100 @@ public class MainActivity extends AppCompatActivity {
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<infoButton>");
-                String data = "info\r";
-                if (usbService != null) { // if UsbService was correctly binded, Send data
-                    logTextView.append("<usbService != null>");
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService == null>");
-                }
+                logTextView.append("<infoButton>\n");
+                sendCommand("info");
             }
         });
 
         showDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<showDateButton>");
-                String data = "date\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<showDateButton>\n");
+                sendCommand("date");
             }
         });
 
         loggaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<loggaButton>");
-                String data = "logga\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<loggaButton>\n");
+                sendCommand("logga");
             }
         });
 
         showLonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<showLonButton>");
-                String data = "lon\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<showLonButton>\n");
+                sendCommand("lon");
             }
         });
 
         showLatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<showLatButton>");
-                String data = "lat\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<showLatButton>\n");
+                sendCommand("lat");
             }
         });
 
         autoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<autoButton>");
-                String data = "run auto\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<autoButton>\n");
+                sendCommand("run auto");
             }
         });
 
         setDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<setDateButton>");
+                logTextView.append("<setDateButton>\n");
                 // format: [date YYYY-MM-DD HH:MM:SS\r]
                 SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
                 String time = dateFormatGmt.format(new Date())+"";
-                String data = "date " + time + "\r";
-
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                sendCommand("date " + time);
             }
-
-
         });
 
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<upButton>");
-                String data = "run u\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<upButton>\n");
+                sendCommand("run u");
             }
         });
 
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<leftButton>");
-                String data = "run l\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<leftButton>\n");
+                sendCommand("run l");
             }
         });
 
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<rightButton>");
-                String data = "run r\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<rightButton>\n");
+                sendCommand("run r");
             }
         });
 
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<downButton>");
-                String data = "run d\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<downButton>\n");
+                sendCommand("run d");
             }
         });
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logTextView.append("<stopButton>");
-                String data = "run stop\r";
-                if (usbService != null) {
-                    usbService.write(data.getBytes());
-                }
-                else{
-                    logTextView.append("<usbService:null>");
-                }
+                logTextView.append("<stopButton>\n");
+                sendCommand("run stop");
             }
         });
 
@@ -363,5 +279,14 @@ public class MainActivity extends AppCompatActivity {
                 logTextView.setText("");
             }
         });
+    }
+
+    private void sendCommand(String cmd){
+        String data = cmd + "\r";  //don't forget the '\r'
+        if (usbService != null) {
+            usbService.write(data.getBytes());
+        }else{
+            logTextView.append("[usbservice is null, cant send]\n");
+        }
     }
 }

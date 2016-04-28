@@ -19,6 +19,7 @@ import android.hardware.usb.UsbManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.felhr.usbserial.CDCSerialDevice;
 import com.felhr.usbserial.UsbSerialDevice;
@@ -55,6 +56,10 @@ public class UsbService extends Service {
     private UsbSerialDevice serialPort;
 
     private boolean serialPortConnected;
+
+    private byte[] currentMessage = null; // saving message if need to resend
+    private boolean resent = false;
+
     /*
      *  Data received from serial port will be received here. Just populate onReceivedData with your code
      *  In this particular example. byte stream is converted to String and send to UI thread to
@@ -65,13 +70,34 @@ public class UsbService extends Service {
         public void onReceivedData(byte[] arg0) {
             try {
                 String data = new String(arg0, "UTF-8");
-                if (mHandler != null)
-                    mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
+                //if response is correct, pass on to ui
+                if(responseIsValid(data)){
+                    currentMessage = null;
+                    resent = false;
+                    if (mHandler != null)
+                        mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
+                    Log.d("UsbService", "A");
+                }else if(!resent){
+                    //if fail, send message again, do this at most 2 times.
+                    Log.d("UsbService", "'Unknown command' resending command");
+                    resent = true;
+                    try {Thread.sleep(50);} catch (InterruptedException e) {e.printStackTrace();}
+                    write(currentMessage);
+                    Log.d("UsbService", "B");
+                }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
     };
+
+    private boolean responseIsValid(String response){
+        if(response.contains("Unknown command")){
+            return false;
+        }
+        return true;
+    }
+
     /*
      * Different notifications from OS will be received here (USB attached, detached, permission responses...)
      * About BroadcastReceiver: http://developer.android.com/reference/android/content/BroadcastReceiver.html
@@ -144,8 +170,11 @@ public class UsbService extends Service {
      * This function will be called from MainActivity to write data through Serial Port
      */
     public void write(byte[] data) {
+        Log.d("UsbService", "write-start");
+        currentMessage = data;
         if (serialPort != null)
             serialPort.write(data);
+        Log.d("UsbService", "write-end");
     }
 
     public void setHandler(Handler mHandler) {
