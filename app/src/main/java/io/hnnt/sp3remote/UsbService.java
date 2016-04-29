@@ -124,10 +124,12 @@ public class UsbService extends Service {
                     findSerialPortDevice(); // A USB device has been attached. Try to open it as a Serial port
             } else if (arg1.getAction().equals(ACTION_USB_DETACHED)) {
                 // Usb device was disconnected. send an intent to the Main Activity
-                Intent intent = new Intent(ACTION_USB_DISCONNECTED);
-                arg0.sendBroadcast(intent);
-                serialPortConnected = false;
-                serialPort.close();
+                if(serialPort != null){
+                    Intent intent = new Intent(ACTION_USB_DISCONNECTED);
+                    arg0.sendBroadcast(intent);
+                    serialPortConnected = false;
+                    serialPort.close();
+                }
             }
         }
     };
