@@ -9,10 +9,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -27,12 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity implements LocationListener{
 
     private TextView logTextView;
     private Button infoButton;
@@ -49,16 +48,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private Button stopButton;
     private Button clearButton;
     private Button setPosButton;
+    private Context mainContext = this;
 
-    private LocationManager locationManager;
+
     private Location location;
     private boolean setPosButtonBoolean = true;
     private String provider;
+    private DecimalFormat df = new DecimalFormat("#.0000");
 
     private double latitude, longitude;
 
     private UsbService usbService;
     private MyHandler mHandler;
+
+    private GpsLocation gpsLocation;
 
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mHandler = new MyHandler(this);
+        gpsLocation = new GpsLocation(mainContext, location);
         createButtonListeners();
     }
 
@@ -109,12 +113,40 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     };
 
+
+
     @Override
     public void onResume() {
         super.onResume();
         setFilters();  // Start listening notifications from UsbService
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
-        checkPermission();
+    }
+
+    @Override
+    public void onLocationChanged(Location location){
+        latitude = 9001;
+        longitude = 9001;
+        if(location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            latitude = Double.valueOf(df.format(latitude));
+            longitude = Double.valueOf(df.format(longitude));
+
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 
@@ -172,28 +204,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
-    private void getLocationManager(){
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria,true);
-        checkPermission();
-        getLocation();
-        location = locationManager.getLastKnownLocation(provider);
-    }
-
-    private void getLocation(){
-        checkPermission();
-        locationManager.requestSingleUpdate(provider, this, null);
-    }
-
-
-    private void checkPermission(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
+    protected void checkPermission(){
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
 
@@ -203,30 +218,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
-    @Override
-    public void onLocationChanged (Location location){
-        latitude = 9001;
-        longitude = 9001;
-        if(location != null) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
-    }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Toast.makeText(this, "Enabled new provider " + provider, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
-    }
 
     public void showRequestDialog(){
         new AlertDialog.Builder(this)
@@ -238,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
-                        getLocationManager();
+                        gpsLocation.getLocationManager(mainContext);
                     }
                 })
                 .setNegativeButton(getString(R.string.deny_button_text), new DialogInterface.OnClickListener() {
@@ -249,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 })
                 .show();
     }
+
 
     /*
     *   Buttonlisteners
@@ -385,16 +378,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             public void onClick(View v) {
                 logTextView.append("<setPosButton>\n");
                 checkPermission();
-                getLocationManager();
-                getLocation();
+                gpsLocation.getLocationManager(mainContext);
+                gpsLocation.getLocation(mainContext);
                 if(!setPosButtonBoolean){
                     showRequestDialog();
                 }else{
                     onLocationChanged(location);
-                    logTextView.append("lat: " +latitude + "\n");
                     sendCommand("lat " +latitude);
-                    logTextView.append("lon: " +longitude + "\n");
-                    sendCommand("lon " +longitude);
+                    logTextView.append("lat: " + latitude + "\n");
+                    logTextView.append("lon: " + longitude + "\n");
+                    sendCommand("lon " + longitude);
                 }
             }
         }));
