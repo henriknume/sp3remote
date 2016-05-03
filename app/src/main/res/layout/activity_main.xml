@@ -140,6 +140,12 @@
                 android:text="@string/clear_button_text"
                 android:id="@+id/clear_button"
                 android:layout_weight="1" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/set_pos_button_text"
+                android:id="@+id/set_pos_button"
+                android:layout_weight="1" />
         </TableRow>
     </TableLayout>
 

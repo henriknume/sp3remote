@@ -1,16 +1,26 @@
 package io.hnnt.sp3remote;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,7 +32,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private TextView logTextView;
     private Button infoButton;
@@ -38,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
     private Button downButton;
     private Button stopButton;
     private Button clearButton;
+    private Button setPosButton;
+
+    private LocationManager locationManager;
+    private Location location;
+    private boolean setPosButtonBoolean = true;
+    private String provider;
+
+    private double latitude, longitude;
 
     private UsbService usbService;
     private MyHandler mHandler;
@@ -45,14 +63,14 @@ public class MainActivity extends AppCompatActivity {
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            logTextView.setText("onServiceConnected()");
+            logTextView.append("onServiceConnected()");
             usbService = ((UsbService.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            logTextView.setText("onServiceDisconnected()");
+            logTextView.append("onServiceDisconnected()");
             usbService = null;
         }
     };
@@ -96,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         setFilters();  // Start listening notifications from UsbService
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
+        checkPermission();
+
     }
 
     @Override
@@ -152,6 +172,84 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void getLocationManager(){
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria,true);
+        checkPermission();
+        getLocation();
+        location = locationManager.getLastKnownLocation(provider);
+    }
+
+    private void getLocation(){
+        checkPermission();
+        locationManager.requestSingleUpdate(provider, this, null);
+    }
+
+
+    private void checkPermission(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
+
+        if ((requestCode == 9001) && (grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+        }else{
+            showRequestDialog();
+        }
+    }
+
+    @Override
+    public void onLocationChanged (Location location){
+        latitude = 9001;
+        longitude = 9001;
+        if(location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(this, "Enabled new provider " + provider, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showRequestDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.alertdialog_title))
+                .setMessage(getString((R.string.alertdialog_message)))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.ok_button_text),new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
+                        getLocationManager();
+                    }
+                })
+                .setNegativeButton(getString(R.string.deny_button_text), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setPosButtonBoolean = false;
+                    }
+                })
+                .show();
+    }
+
     /*
     *   Buttonlisteners
     */
@@ -172,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
         downButton =       (Button) findViewById(R.id.down_button);
         stopButton =       (Button) findViewById(R.id.stop_button);
         clearButton =      (Button) findViewById(R.id.clear_button);
+        setPosButton =     (Button) findViewById(R.id.set_pos_button);
 
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,6 +378,26 @@ public class MainActivity extends AppCompatActivity {
                 logTextView.setText("");
             }
         });
+
+        setPosButton.setOnClickListener((new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                logTextView.append("<setPosButton>\n");
+                checkPermission();
+                getLocationManager();
+                getLocation();
+                if(!setPosButtonBoolean){
+                    showRequestDialog();
+                }else{
+                    onLocationChanged(location);
+                    logTextView.append("lat: " +latitude + "\n");
+                    sendCommand("lat " +latitude);
+                    logTextView.append("lon: " +longitude + "\n");
+                    sendCommand("lon " +longitude);
+                }
+            }
+        }));
     }
 
     private void sendCommand(String cmd){

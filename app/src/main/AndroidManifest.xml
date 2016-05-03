@@ -6,6 +6,9 @@
         android:name="android.hardware.usb.host"
         android:required="true" />
 
+    <permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,8 +28,6 @@
         <service
             android:name=".UsbService"
             android:enabled="true"></service>
-
-        <activity android:name=".SetDateActivity"></activity>
     </application>
 
 </manifest>

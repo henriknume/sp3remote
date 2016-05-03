@@ -14,4 +14,12 @@
     <string name="set_date_button_text">Set Date</string>
     <string name="clear_button_text">Clear</string>
     <string name="log_textview_text">""</string>
+    <string name="ok_button_text">ok</string>
+    <string name="deny_button_text">Deny</string>
+    <string name="set_pos_button_text">Set Pos</string>
+
+    <string name="alertdialog_title">SP3 Remote Permission</string>
+    <string name="alertdialog_message">This permission is needed to utilize the set pos option</string>
+
+
 </resources>
