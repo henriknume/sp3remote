@@ -25,13 +25,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements LocationListener{
+
+    private Context mainContext = this;
 
     private TextView logTextView;
     private Button infoButton;
@@ -48,20 +49,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     private Button stopButton;
     private Button clearButton;
     private Button setPosButton;
-    private Context mainContext = this;
 
-
+    private GpsLocation gpsLocation;
     private Location location;
+    private LocationListener locationListener;
     private boolean setPosButtonBoolean = true;
     private String provider;
-    private DecimalFormat df = new DecimalFormat("#.0000");
-
-    private double latitude, longitude;
+    private Double latitude;
+    private Double longitude;
 
     private UsbService usbService;
     private MyHandler mHandler;
 
-    private GpsLocation gpsLocation;
+
 
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
@@ -83,7 +83,29 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mHandler = new MyHandler(this);
-        gpsLocation = new GpsLocation(mainContext, location);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location){
+
+                }
+
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        gpsLocation = new GpsLocation();
         createButtonListeners();
     }
 
@@ -122,33 +144,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
     }
 
-    @Override
-    public void onLocationChanged(Location location){
-        latitude = 9001;
-        longitude = 9001;
-        if(location != null) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-            latitude = Double.valueOf(df.format(latitude));
-            longitude = Double.valueOf(df.format(longitude));
-
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
     @Override
     public void onPause() {
@@ -182,6 +177,36 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
         registerReceiver(mUsbReceiver, filter);
     }
+    /*
+     * OnLocationChanged get's location from GpsLocation.class
+     * gpsLocation.getLastKnowLocation get the location from the GpsLocation class method
+     * used to create the getLocationManager.
+     */
+    @Override
+    public void onLocationChanged(Location location){
+        location = gpsLocation.getLastKnownLocation();
+        latitude = 9001.;
+        longitude = 9001.;
+        if(location != null) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+         }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 
     /*
      * This handler will be passed to UsbService. Data received from serial port is displayed through this handler
@@ -204,6 +229,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
 
+    /*
+     * These methods are used to check that the app has the proper permissions
+     * and if not it will request them from the user.
+     * Note that this only applies to SDK23 and above.
+     */
     protected void checkPermission(){
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
@@ -218,8 +248,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         }
     }
 
-
-
     public void showRequestDialog(){
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.alertdialog_title))
@@ -230,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
-                        gpsLocation.getLocationManager(mainContext);
+                        gpsLocation.getLocationManager(provider, mainContext, location, locationListener);
                     }
                 })
                 .setNegativeButton(getString(R.string.deny_button_text), new DialogInterface.OnClickListener() {
@@ -378,8 +406,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             public void onClick(View v) {
                 logTextView.append("<setPosButton>\n");
                 checkPermission();
-                gpsLocation.getLocationManager(mainContext);
-                gpsLocation.getLocation(mainContext);
+                gpsLocation.getLocationManager(provider, mainContext, location, locationListener);
+
                 if(!setPosButtonBoolean){
                     showRequestDialog();
                 }else{
