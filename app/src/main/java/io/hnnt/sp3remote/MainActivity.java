@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity implements LocationListener{
+public class MainActivity extends AppCompatActivity{
 
     private Context mainContext = this;
 
@@ -176,36 +176,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED);
         filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
         registerReceiver(mUsbReceiver, filter);
-    }
-    /*
-     * OnLocationChanged get's location from GpsLocation.class
-     * gpsLocation.getLastKnowLocation get the location from the GpsLocation class method
-     * used to create the getLocationManager.
-     */
-    @Override
-    public void onLocationChanged(Location location){
-        location = gpsLocation.getLastKnownLocation();
-        latitude = 9001.;
-        longitude = 9001.;
-        if(location != null) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-         }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
     /*
@@ -411,7 +381,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 if(!setPosButtonBoolean){
                     showRequestDialog();
                 }else{
-                    onLocationChanged(location);
+                    latitude = gpsLocation.getLatitude();
+                    longitude = gpsLocation.getLongitude();
                     sendCommand("lat " +latitude);
                     logTextView.append("lat: " + latitude + "\n");
                     logTextView.append("lon: " + longitude + "\n");

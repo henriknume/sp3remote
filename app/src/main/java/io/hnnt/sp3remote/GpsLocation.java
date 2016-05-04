@@ -1,21 +1,19 @@
 package io.hnnt.sp3remote;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
 /**
  * Created by Tobias Nielsen on 2016-05-03.
  */
-public class GpsLocation  {
+public class GpsLocation implements LocationListener {
 
     private  LocationManager locationManager;
     private Location location;
@@ -41,5 +39,39 @@ public class GpsLocation  {
 
     protected Location getLastKnownLocation(){
         return location;
+    }
+
+    protected double getLatitude(){
+        if(location != null)
+        return location.getLatitude();
+        else
+            return (double)9001;
+    }
+
+
+    protected double getLongitude(){
+        if(location != null)
+            return location.getLongitude();
+        else
+            return (double)9001;    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        location = getLastKnownLocation();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
