@@ -15,25 +15,47 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
+
+import butterknife.ButterKnife;
+import io.hnnt.sp3remote.fragments.InfoFragment;
+import io.hnnt.sp3remote.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity{
 
     private Context mainContext = this;
 
+    private GpsLocation gpsLocation;
+    private Location location;
+    private LocationListener locationListener;
+    private boolean setPosButtonBoolean = true;
+    private String provider;
+    private Double latitude;
+    private Double longitude;
+
+    private UsbService usbService;
+    private UsbServiceHandler usbServiceHandler;
+
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+/*
     private TextView logTextView;
     private Button infoButton;
     private Button showDateButton;
@@ -49,46 +71,21 @@ public class MainActivity extends AppCompatActivity{
     private Button stopButton;
     private Button clearButton;
     private Button setPosButton;
-
-    private GpsLocation gpsLocation;
-    private Location location;
-    private LocationListener locationListener;
-    private boolean setPosButtonBoolean = true;
-    private String provider;
-    private Double latitude;
-    private Double longitude;
-
-    private UsbService usbService;
-    private MyHandler mHandler;
-
-
-
-    private final ServiceConnection usbConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            logTextView.append("onServiceConnected()");
-            usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(mHandler);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            logTextView.append("onServiceDisconnected()");
-            usbService = null;
-        }
-    };
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mHandler = new MyHandler(this);
+        ButterKnife.bind(this);
+
+        usbServiceHandler = new UsbServiceHandler(this);
+
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location){
 
-                }
-
+            }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -106,36 +103,20 @@ public class MainActivity extends AppCompatActivity{
             }
         };
         gpsLocation = new GpsLocation();
-        createButtonListeners();
+
+
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
-
-    /*
-     * Notifications from UsbService will be received here.
-     */
-    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case UsbService.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
-                    Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
-                    break;
-                case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
-                    Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-                    break;
-                case UsbService.ACTION_NO_USB: // NO USB CONNECTED
-                    Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
-                    break;
-                case UsbService.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
-                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
-                    break;
-                case UsbService.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
-                    Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
-
 
     @Override
     public void onResume() {
@@ -144,13 +125,43 @@ public class MainActivity extends AppCompatActivity{
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
     }
 
-
     @Override
     public void onPause() {
-        super.onPause();
         unregisterReceiver(mUsbReceiver);
         unbindService(usbConnection);
+        super.onPause();
     }
+
+    /*
+     *  Setting up ViewPager and adding fragments
+     */
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new InfoFragment(), "info");
+        adapter.addFragment(new SettingsFragment(), "settings");
+        //adapter.addFragment(new ThreeFragment(), "control");
+        //adapter.addFragment(new FourFragment(), "log");
+        viewPager.setAdapter(adapter);
+    }
+
+    /*
+     *  Service connection to the UsbService
+     */
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            Log.d("USBservice","onServiceConnected()");
+            usbService = ((UsbService.UsbBinder) arg1).getService();
+            usbService.setHandler(usbServiceHandler);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            Log.d("USBservice","onServiceDisconnected()");
+            usbService = null;
+        }
+    };
 
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
         if (!UsbService.SERVICE_CONNECTED) {
@@ -179,12 +190,38 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /*
+     * Notifications from UsbService will be received here.
+     */
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case UsbService.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
+                    Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
+                    Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_NO_USB: // NO USB CONNECTED
+                    Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
+                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
+                    Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    /*
      * This handler will be passed to UsbService. Data received from serial port is displayed through this handler
      */
-    private static class MyHandler extends Handler {
+    private static class UsbServiceHandler extends Handler {
         private final WeakReference<MainActivity> mActivity;
 
-        public MyHandler(MainActivity activity) {
+        public UsbServiceHandler(MainActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
@@ -193,7 +230,7 @@ public class MainActivity extends AppCompatActivity{
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
                     String data = (String) msg.obj;
-                    mActivity.get().logTextView.append(data);
+                    //mActivity.get().logTextView.append(data);
                     break;
             }
         }
@@ -212,7 +249,9 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
 
-        if ((requestCode == 9001) && (grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+        if ((requestCode == 9001)
+                && (grantResults.length > 0)
+                && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
         }else{
             showRequestDialog();
         }
@@ -240,11 +279,20 @@ public class MainActivity extends AppCompatActivity{
                 .show();
     }
 
+    private void sendCommand(String cmd){
+        String data = cmd + "\r";  //don't forget the '\r'
+        if (usbService != null) {
+            usbService.write(data.getBytes());
+        }else{
+            Log.d("sendCommand()", "usbService is null, cant send command");
+        }
+    }
+
 
     /*
     *   Buttonlisteners
     */
-
+/*
     private void createButtonListeners() {
 
         logTextView =    (TextView) findViewById(R.id.log_textview);
@@ -267,7 +315,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 logTextView.append("<infoButton>\n");
-                sendCommand("info");
+                //sendCommand("info");
             }
         });
 
@@ -275,7 +323,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 logTextView.append("<showDateButton>\n");
-                sendCommand("date");
+                //sendCommand("date");
             }
         });
 
@@ -396,13 +444,5 @@ public class MainActivity extends AppCompatActivity{
             }
         }));
     }
-
-    private void sendCommand(String cmd){
-        String data = cmd + "\r";  //don't forget the '\r'
-        if (usbService != null) {
-            usbService.write(data.getBytes());
-        }else{
-            logTextView.append("[usbservice is null, cant send]\n");
-        }
-    }
+    */
 }

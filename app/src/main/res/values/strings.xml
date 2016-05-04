@@ -21,5 +21,9 @@
     <string name="alertdialog_title">SP3 Remote Permission</string>
     <string name="alertdialog_message">This permission is needed to utilize the set pos option</string>
 
+    <!-- Fragments  -->
+
+    <string name="fragment_info">Info</string>
+    <string name="fragment_settings">Settings</string>
 
 </resources>
