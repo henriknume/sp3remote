@@ -17,6 +17,7 @@ public class GpsLocation implements LocationListener {
 
     private  LocationManager locationManager;
     private Location location;
+    private static final double POS_CONTROL_VALUE = 9001.;
 
 
     protected GpsLocation(){ }
@@ -45,7 +46,7 @@ public class GpsLocation implements LocationListener {
         if(location != null)
         return location.getLatitude();
         else
-            return (double)9001;
+            return POS_CONTROL_VALUE;
     }
 
 
@@ -53,7 +54,7 @@ public class GpsLocation implements LocationListener {
         if(location != null)
             return location.getLongitude();
         else
-            return (double)9001;    }
+            return POS_CONTROL_VALUE;    }
 
     @Override
     public void onLocationChanged(Location location) {

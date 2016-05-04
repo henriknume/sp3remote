@@ -58,6 +58,10 @@ public class MainActivity extends AppCompatActivity{
     private Double latitude;
     private Double longitude;
 
+    private static final double POS_CONTROL_VALUE = 9001.;
+    private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 9001;
+    private static final int THREAD_SLEEP_TIMER = 50;
+
     private UsbService usbService;
     private MyHandler mHandler;
 
@@ -206,7 +210,7 @@ public class MainActivity extends AppCompatActivity{
      */
     protected void checkPermission(){
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION);
         }
     }
     @Override
@@ -227,7 +231,7 @@ public class MainActivity extends AppCompatActivity{
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 9001);
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION);
                         gpsLocation.getLocationManager(provider, mainContext, location, locationListener);
                     }
                 })
@@ -383,14 +387,16 @@ public class MainActivity extends AppCompatActivity{
                 }else{
                     latitude = gpsLocation.getLatitude();
                     longitude = gpsLocation.getLongitude();
+                    if(latitude != POS_CONTROL_VALUE)
                     sendCommand("lat " +latitude);
                     logTextView.append("lat: " + latitude + "\n");
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(THREAD_SLEEP_TIMER);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     logTextView.append("lon: " + longitude + "\n");
+                    if(longitude != POS_CONTROL_VALUE)
                     sendCommand("lon " + longitude);
                 }
             }
