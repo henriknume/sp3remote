@@ -385,6 +385,11 @@ public class MainActivity extends AppCompatActivity{
                     longitude = gpsLocation.getLongitude();
                     sendCommand("lat " +latitude);
                     logTextView.append("lat: " + latitude + "\n");
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     logTextView.append("lon: " + longitude + "\n");
                     sendCommand("lon " + longitude);
                 }

@@ -81,7 +81,7 @@ public class UsbService extends Service {
                     //if fail, send message again, do this at most 2 times.
                     Log.d("UsbService", "'Unknown command' resending command");
                     resent = true;
-                    try {Thread.sleep(50);} catch (InterruptedException e) {e.printStackTrace();}
+                    try {Thread.sleep(15);} catch (InterruptedException e) {e.printStackTrace();}
                     write(currentMessage);
                     Log.d("UsbService", "B");
                 }
