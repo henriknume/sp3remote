@@ -3,14 +3,13 @@ package io.hnnt.sp3remote.fragments;
 /**
  * Created by nume on 2016-04-29.
  */
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import io.hnnt.sp3remote.R;
@@ -47,12 +46,21 @@ public class InfoFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        RelativeLayout mRelativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_info,
+        return inflater.inflate(R.layout.fragment_info, container, false);
+    }
+
+
+
+    /*  @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        FrameLayout mFrameLayout = (FrameLayout) inflater.inflate(R.layout.fragment_info,
                 container, false);
 
-        debugTextView = (TextView) mRelativeLayout.findViewById(R.id.debug_textview);
+        debugTextView = (TextView) mFrameLayout.findViewById(R.id.info_textview);
 
-        Button mButton = (Button) mRelativeLayout.findViewById(R.id.info_button);
+        Button mButton = (Button) mFrameLayout.findViewById(R.id.info_button);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,10 +69,10 @@ public class InfoFragment extends Fragment{
             }
         });
         // after you've done all your manipulation, return your layout to be shown
-        return mRelativeLayout;
+        return mFrameLayout;
         //return inflater.inflate(R.layout.fragment_info, container, false);
     }
-
+*/
     @Override
     public void onPause() {
         //LocalBroadcastManager.getInstance(fcontext).unregisterReceiver(mMessageReceiver);

@@ -1,5 +1,9 @@
 <resources>
+
     <string name="app_name">sp3remote</string>
+
+
+    <!-- Old layout button texts, remove when not needed anylonger -->
     <string name="info_button_text">Info</string>
     <string name="show_date_button_text">Show Date</string>
     <string name="logga_button_text">Logga</string>
@@ -25,5 +29,9 @@
 
     <string name="fragment_info">Info</string>
     <string name="fragment_settings">Settings</string>
+
+    <!-- Info Fragment textview labels -->
+
+    <string name="info_softwareversion_label">Software Version</string>
 
 </resources>
