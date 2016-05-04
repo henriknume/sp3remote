@@ -387,8 +387,11 @@ public class MainActivity extends AppCompatActivity{
                 }else{
                     latitude = gpsLocation.getLatitude();
                     longitude = gpsLocation.getLongitude();
-                    if(latitude != POS_CONTROL_VALUE)
-                    sendCommand("lat " +latitude);
+                    if(latitude != POS_CONTROL_VALUE){
+                        sendCommand("lat " +latitude);
+                    }else{
+                        Toast.makeText(mainContext, R.string.toast_message_no_valid_loc,Toast.LENGTH_SHORT);
+                    }
                     logTextView.append("lat: " + latitude + "\n");
                     try {
                         Thread.sleep(THREAD_SLEEP_TIMER);
@@ -396,8 +399,11 @@ public class MainActivity extends AppCompatActivity{
                         e.printStackTrace();
                     }
                     logTextView.append("lon: " + longitude + "\n");
-                    if(longitude != POS_CONTROL_VALUE)
-                    sendCommand("lon " + longitude);
+                    if(longitude != POS_CONTROL_VALUE){
+                        sendCommand("lon " + longitude);
+                    }else{
+                        Toast.makeText(mainContext, R.string.toast_message_no_valid_loc,Toast.LENGTH_SHORT);
+                    }
                 }
             }
         }));
