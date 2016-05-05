@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import butterknife.ButterKnife;
+import io.hnnt.sp3remote.fragments.ControlFragment;
 import io.hnnt.sp3remote.fragments.InfoFragment;
 import io.hnnt.sp3remote.fragments.SettingsFragment;
 
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity{
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new InfoFragment(), "info");
         adapter.addFragment(new SettingsFragment(), "settings");
-        //adapter.addFragment(new ThreeFragment(), "control");
+        adapter.addFragment(new ControlFragment(), "control");
         //adapter.addFragment(new FourFragment(), "log");
         viewPager.setAdapter(adapter);
     }

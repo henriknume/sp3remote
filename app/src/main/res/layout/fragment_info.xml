@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/fragment_info"
-            android:fontFamily="monospace"
+            android:fontFamily="sans-serif"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textAllCaps="true"
@@ -63,7 +63,7 @@
                 android:text="@string/info_button_text"
                 android:layout_weight="1"
                 android:layout_gravity="top"
-                android:gravity="top|center" />
+                android:gravity="center" />
         </TableRow>
     </TableLayout>
 
