@@ -1,5 +1,9 @@
 <resources>
+
     <string name="app_name">sp3remote</string>
+
+
+    <!-- Old layout button texts, remove when not needed anylonger -->
     <string name="info_button_text">Info</string>
     <string name="show_date_button_text">Show Date</string>
     <string name="logga_button_text">Logga</string>
@@ -22,6 +26,32 @@
     <string name="alertdialog_message">This permission is needed to utilize the set pos option</string>
 
     <string name="toast_message_no_valid_loc">No valid location was found. Check Positioning settings and try again</string>
+
+
+    <!-- Fragments  -->
+
+    <string name="fragment_info">Info</string>
+    <string name="fragment_settings">Settings</string>
+    <string name="fragment_control">Control</string>
+
+    <!-- Info Fragment textview labels -->
+
+    <string name="info_softwareversion_label">Software Version</string>
+    <string name="sync_button_text">Sync</string>
+
+
+    <!-- Settings Fragment textview labels -->
+    <string name="date_label_textview_text">Date:</string>
+    <string name="date_field_textview_text">""</string>
+    <string name="time_label_textview_text">UTC Time:</string>
+    <string name="time_field_textview_text">""</string>
+    <string name="pos_label_textview_text">Position:</string>
+    <string name="latitude_label_textview_text">Latitude:</string>
+    <string name="longitude_label_textview_text">Longitude:</string>
+    <string name="latitude_field_textview_text">""</string>
+    <string name="longitude_field_textview_text">""</string>
+
+    <!-- Control Fragment textview labels -->
 
 
 </resources>
