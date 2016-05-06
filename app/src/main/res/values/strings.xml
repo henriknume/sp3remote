@@ -52,6 +52,6 @@
     <string name="longitude_field_textview_text">""</string>
 
     <!-- Control Fragment textview labels -->
-
+    <string name="run_auto_button_text">Run Auto</string>
 
 </resources>
