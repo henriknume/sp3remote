@@ -17,9 +17,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -29,8 +26,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -80,11 +75,11 @@ public class MainActivity extends AppCompatActivity{
     private String provider;
     private Double latitude;
     private Double longitude;
-
+*/
     private static final double POS_CONTROL_VALUE = 9001.;
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 9001;
     private static final int THREAD_SLEEP_TIMER = 50;
-
+/*
     private UsbService usbService;
     private MyHandler mHandler;
 
