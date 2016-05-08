@@ -1,56 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
     tools:context="io.hnnt.sp3remote.fragments.InfoFragment"
-    android:padding="10sp">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:gravity="top">
-
-        <TextView
-            android:id="@+id/fragement_info_textview"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/fragment_info"
-            android:fontFamily="sans-serif"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="4">
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_marginTop="10dp">
 
         <ScrollView
-            android:id="@+id/scrollView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center" >
+            android:id="@+id/scrollView" >
 
             <TextView
                 android:id="@+id/info_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/colorBlack" />
+                 />
         </ScrollView>
     </FrameLayout>
 
     <TableLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="0dp">
 
         <TableRow
             android:layout_width="match_parent"
@@ -61,9 +43,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="@string/info_button_text"
+                android:textStyle="bold"
+                android:background="@color/colorBlack"
+                android:textColor="@color/textColorPrimary"
                 android:layout_weight="1"
                 android:layout_gravity="top"
-                android:gravity="center" />
+                android:gravity="center"
+                android:layout_marginRight="10sp"
+                android:layout_marginLeft="10sp"
+                android:textSize="30sp" />
         </TableRow>
     </TableLayout>
 

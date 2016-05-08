@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="io.hnnt.sp3remote.fragments.LogFragment"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_marginTop="10dp">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView" >
+
+            <TextView
+                android:id="@+id/log_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                />
+        </ScrollView>
+
+    </FrameLayout>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="30dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="20dp">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Start Log"
+                    android:id="@+id/start_log_button"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:background="@color/colorBlack"
+                    android:textColor="@color/textColorPrimary"
+
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Stop Log"
+                    android:id="@+id/stop_log_button"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:background="@color/colorBlack"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:layout_marginLeft="55dp" />
+            </TableRow>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/send_log_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/send_log_button_text"
+                    android:textStyle="bold"
+                    android:background="@color/colorBlack"
+                    android:textColor="@color/textColorPrimary"
+                    android:layout_gravity="top|center"
+                    android:gravity="center"
+                    android:textSize="28dp"
+                    android:layout_weight="2" />
+
+            </TableRow>
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

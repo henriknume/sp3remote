@@ -8,31 +8,11 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:gravity="top">
-
-        <TextView
-            android:id="@+id/fragement_control_textview"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/fragment_control"
-            android:fontFamily="sans-serif"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
-
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="10">
+        android:layout_weight="10"
+        android:layout_marginTop="10dp">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -40,16 +20,40 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_height="match_parent">
 
-                <ImageButton
-                    android:id="@+id/imageButton6"
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:text="New Button"
                     android:layout_weight="1"
-                    android:layout_gravity="bottom" />
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/run_auto_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="@string/run_auto_button_text"
+                    android:textColor="#ffffff"
+                    android:background="@android:color/black" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Button"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
             </TableRow>
 
             <TableRow
@@ -61,13 +65,12 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton9"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:visibility="invisible" />
 
                 <ImageButton
-                    android:id="@+id/imageButton5"
+                    android:id="@+id/up_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_arrow_up_64p"
@@ -80,7 +83,6 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton10"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:visibility="invisible" />
@@ -91,7 +93,7 @@
                 android:layout_height="match_parent">
 
                 <ImageButton
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/left_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_arrow_left_64p"
@@ -101,7 +103,7 @@
                     android:layout_marginLeft="20sp" />
 
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/stop_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_square_stop_64p"
@@ -109,7 +111,7 @@
                     android:background="@android:color/transparent" />
 
                 <ImageButton
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/right_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_arrow_right_64p"
@@ -128,27 +130,27 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton7"
                     android:layout_weight="1"
                     android:visibility="invisible" />
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/down_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icon_arrow_down_64p"
 
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:layout_marginTop="20sp" />
+                    android:layout_marginTop="20sp"
+                    android:layout_gravity="top" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton8"
                     android:layout_weight="1"
                     android:visibility="invisible" />
             </TableRow>
+
         </TableLayout>
     </FrameLayout>
 
