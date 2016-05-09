@@ -25,6 +25,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
@@ -47,61 +49,34 @@ public class MainActivity extends AppCompatActivity{
     private Double longitude;
 
     private UsbService usbService;
-    private UsbServiceHandler usbServiceHandler;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-/*
-    private TextView logTextView;
-    private Button infoButton;
-    private Button showDateButton;
-    private Button loggaButton;
-    private Button showLonButton;
-    private Button showLatButton;
-    private Button autoButton;
-    private Button setDateButton;
-    private Button upButton;
-    private Button leftButton;
-    private Button rightButton;
-    private Button downButton;
-    private Button stopButton;
-    private Button clearButton;
-    private Button setPosButton;
+    private CommandHandler commandHandler;
 
-    private GpsLocation gpsLocation;
-    private Location location;
-    private LocationListener locationListener;
-    private boolean setPosButtonBoolean = true;
-    private String provider;
-    private Double latitude;
-    private Double longitude;
-*/
     private static final double POS_CONTROL_VALUE = 9001.;
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 9001;
     private static final int THREAD_SLEEP_TIMER = 50;
-/*
-    private UsbService usbService;
-    private MyHandler mHandler;
 
-
-
+    /*
+    *  Service connection to the UsbService
+    */
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            logTextView.append("onServiceConnected()");
+            Log.d("USBservice","onServiceConnected()");
             usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(mHandler);
+            commandHandler.updateService(usbService);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            logTextView.append("onServiceDisconnected()");
+            Log.d("USBservice","onServiceDisconnected()");
             usbService = null;
+            commandHandler.updateService(usbService);
         }
     };
-
-*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +84,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        usbServiceHandler = new UsbServiceHandler(this);
-
+        commandHandler = new CommandHandler(usbService);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location){
@@ -134,8 +108,6 @@ public class MainActivity extends AppCompatActivity{
         };
         gpsLocation = new GpsLocation();
 
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -143,9 +115,14 @@ public class MainActivity extends AppCompatActivity{
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -153,13 +130,21 @@ public class MainActivity extends AppCompatActivity{
         super.onResume();
         setFilters();  // Start listening notifications from UsbService
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
+        EventBus.getDefault().register(commandHandler);
     }
 
     @Override
     public void onPause() {
         unregisterReceiver(mUsbReceiver);
         unbindService(usbConnection);
+        EventBus.getDefault().unregister(commandHandler);
+        commandHandler.clearQueue();
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     /*
@@ -174,24 +159,6 @@ public class MainActivity extends AppCompatActivity{
         adapter.addFragment(new LogFragment(), "log");
         viewPager.setAdapter(adapter);
     }
-
-    /*
-     *  Service connection to the UsbService
-     */
-    private final ServiceConnection usbConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            Log.d("USBservice","onServiceConnected()");
-            usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(usbServiceHandler);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            Log.d("USBservice","onServiceDisconnected()");
-            usbService = null;
-        }
-    };
 
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
         if (!UsbService.SERVICE_CONNECTED) {
@@ -246,27 +213,6 @@ public class MainActivity extends AppCompatActivity{
     };
 
     /*
-     * This handler will be passed to UsbService. Data received from serial port is displayed through this handler
-     */
-    private static class UsbServiceHandler extends Handler {
-        private final WeakReference<MainActivity> mActivity;
-
-        public UsbServiceHandler(MainActivity activity) {
-            mActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UsbService.MESSAGE_FROM_SERIAL_PORT:
-                    String data = (String) msg.obj;
-                    //mActivity.get().logTextView.append(data);
-                    break;
-            }
-        }
-    }
-
-    /*
      * These methods are used to check that the app has the proper permissions
      * and if not it will request them from the user.
      * Note that this only applies to SDK23 and above.
@@ -309,86 +255,7 @@ public class MainActivity extends AppCompatActivity{
                 .show();
     }
 
-    private void sendCommand(String cmd){
-        String data = cmd + "\r";  //don't forget the '\r'
-        if (usbService != null) {
-            usbService.write(data.getBytes());
-        }else{
-            Log.d("sendCommand()", "usbService is null, cant send command");
-        }
-    }
-
-
-    /*
-    *   Buttonlisteners
-    */
-/*
-    private void createButtonListeners() {
-
-        logTextView =    (TextView) findViewById(R.id.log_textview);
-        infoButton =       (Button) findViewById(R.id.info_button);
-        showDateButton =   (Button) findViewById(R.id.show_date_button);
-        loggaButton =      (Button) findViewById(R.id.logga_button);
-        showLonButton =    (Button) findViewById(R.id.show_lon_button);
-        showLatButton =    (Button) findViewById(R.id.show_lat_button);
-        autoButton =       (Button) findViewById(R.id.auto_button);
-        setDateButton =    (Button) findViewById(R.id.set_date_button);
-        upButton =         (Button) findViewById(R.id.up_button);
-        leftButton =       (Button) findViewById(R.id.left_button);
-        rightButton =      (Button) findViewById(R.id.right_button);
-        downButton =       (Button) findViewById(R.id.down_button);
-        stopButton =       (Button) findViewById(R.id.stop_button);
-        clearButton =      (Button) findViewById(R.id.clear_button);
-        setPosButton =     (Button) findViewById(R.id.set_pos_button);
-
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<infoButton>\n");
-                //sendCommand("info");
-            }
-        });
-
-        showDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<showDateButton>\n");
-                //sendCommand("date");
-            }
-        });
-
-        loggaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<loggaButton>\n");
-                sendCommand("logga");
-            }
-        });
-
-        showLonButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<showLonButton>\n");
-                sendCommand("lon");
-            }
-        });
-
-        showLatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<showLatButton>\n");
-                sendCommand("lat");
-            }
-        });
-
-        autoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<autoButton>\n");
-                sendCommand("run auto");
-            }
-        });
-
+ /*
         setDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -398,53 +265,6 @@ public class MainActivity extends AppCompatActivity{
                 dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
                 String time = dateFormatGmt.format(new Date())+"";
                 sendCommand("date " + time);
-            }
-        });
-
-        upButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<upButton>\n");
-                sendCommand("run u");
-            }
-        });
-
-        leftButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<leftButton>\n");
-                sendCommand("run l");
-            }
-        });
-
-        rightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<rightButton>\n");
-                sendCommand("run r");
-            }
-        });
-
-        downButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<downButton>\n");
-                sendCommand("run d");
-            }
-        });
-
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.append("<stopButton>\n");
-                sendCommand("run stop");
-            }
-        });
-
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logTextView.setText("");
             }
         });
 
@@ -482,5 +302,5 @@ public class MainActivity extends AppCompatActivity{
             }
         }));
     }
-    */
+*/
 }

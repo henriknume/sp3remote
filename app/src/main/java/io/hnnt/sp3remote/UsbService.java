@@ -25,9 +25,14 @@ import com.felhr.usbserial.CDCSerialDevice;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.hnnt.sp3remote.events.InfoEvent;
+import io.hnnt.sp3remote.events.ResponseEvent;
 
 public class UsbService extends Service {
 
@@ -43,22 +48,18 @@ public class UsbService extends Service {
     public static final String ACTION_USB_DEVICE_NOT_WORKING = "com.felhr.connectivityservices.ACTION_USB_DEVICE_NOT_WORKING";
     public static final int MESSAGE_FROM_SERIAL_PORT = 0;
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
-    private static final int BAUD_RATE = 38400; // BaudRate. Change this value if you need
+    private static final int BAUD_RATE = 38400;
     public static boolean SERVICE_CONNECTED = false;
 
     private IBinder binder = new UsbBinder();
 
     private Context context;
-    private Handler mHandler;
     private UsbManager usbManager;
     private UsbDevice device;
     private UsbDeviceConnection connection;
     private UsbSerialDevice serialPort;
 
     private boolean serialPortConnected;
-
-    private byte[] currentMessage = null; // saving message if need to resend
-    private boolean resent = false;
 
     /*
      *  Data received from serial port will be received here. Just populate onReceivedData with your code
@@ -70,33 +71,13 @@ public class UsbService extends Service {
         public void onReceivedData(byte[] arg0) {
             try {
                 String data = new String(arg0, "UTF-8");
-                //if response is correct, pass on to ui
-                if(responseIsValid(data)){
-                    currentMessage = null;
-                    resent = false;
-                    if (mHandler != null)
-                        mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
-                    Log.d("UsbService", "A");
-                }else if(!resent){
-                    //if fail, send message again, do this at most 2 times.
-                    Log.d("UsbService", "'Unknown command' resending command");
-                    resent = true;
-                    try {Thread.sleep(15);} catch (InterruptedException e) {e.printStackTrace();}
-                    write(currentMessage);
-                    Log.d("UsbService", "B");
-                }
+                EventBus.getDefault().post(new ResponseEvent(data));
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
     };
-
-    private boolean responseIsValid(String response){
-        if(response.contains("Unknown command")){
-            return false;
-        }
-        return true;
-    }
 
     /*
      * Different notifications from OS will be received here (USB attached, detached, permission responses...)
@@ -148,10 +129,6 @@ public class UsbService extends Service {
         findSerialPortDevice();
     }
 
-    /* MUST READ about services
-     * http://developer.android.com/guide/components/services.html
-     * http://developer.android.com/guide/components/bound-services.html
-     */
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -173,14 +150,9 @@ public class UsbService extends Service {
      */
     public void write(byte[] data) {
         Log.d("UsbService", "write-start");
-        currentMessage = data;
         if (serialPort != null)
             serialPort.write(data);
         Log.d("UsbService", "write-end");
-    }
-
-    public void setHandler(Handler mHandler) {
-        this.mHandler = mHandler;
     }
 
     private void findSerialPortDevice() {
