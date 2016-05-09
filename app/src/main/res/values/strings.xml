@@ -18,14 +18,16 @@
     <string name="set_date_button_text">Set Date</string>
     <string name="clear_button_text">Clear</string>
     <string name="log_textview_text">""</string>
-    <string name="ok_button_text">ok</string>
-    <string name="deny_button_text">Deny</string>
     <string name="set_pos_button_text">Set Pos</string>
 
+
+    <!-- Permission check -->
     <string name="alertdialog_title">SP3 Remote Permission</string>
     <string name="alertdialog_message">This permission is needed to utilize the set pos option</string>
-
     <string name="toast_message_no_valid_loc">No valid location was found. Check Positioning settings and try again</string>
+
+    <string name="ok_button_text">ok</string>
+    <string name="deny_button_text">Deny</string>
 
 
     <!-- Fragments  -->
@@ -59,5 +61,14 @@
     <string name="start_log_button_text">Start log___</string>
     <string name="stop_log_button_text">Stop log</string>
     <string name="send_log_button_text">Send log</string>
+    <string name="logtextview_default_text">""</string>
+
+    <!-- Sending Email text -->
+    <string name="email_intent">mailto</string>
+    <string name="email_recepient_default">emailaddress@thishost.com</string>
+    <string name="email_subject_default">SP3 Log Message From: XXX</string>
+    <string name="email_text_default">===SP3 REMOTE LOG===</string>
+    <string name="email_send_email">Send email...</string>
+
 
 </resources>
