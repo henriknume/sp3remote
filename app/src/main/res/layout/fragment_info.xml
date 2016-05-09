@@ -64,6 +64,15 @@
                 android:layout_weight="1"
                 android:layout_gravity="top"
                 android:gravity="center" />
+
+            <Button
+                android:id="@+id/clear_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/clear_button_text"
+                android:layout_weight="1"
+                android:layout_gravity="top"
+                android:gravity="center" />
         </TableRow>
     </TableLayout>
 

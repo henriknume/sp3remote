@@ -25,9 +25,14 @@ import com.felhr.usbserial.CDCSerialDevice;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.hnnt.sp3remote.events.InfoEvent;
+import io.hnnt.sp3remote.events.ResponseEvent;
 
 public class UsbService extends Service {
 
@@ -57,14 +62,31 @@ public class UsbService extends Service {
 
     private boolean serialPortConnected;
 
-    private byte[] currentMessage = null; // saving message if need to resend
-    private boolean resent = false;
+
 
     /*
      *  Data received from serial port will be received here. Just populate onReceivedData with your code
      *  In this particular example. byte stream is converted to String and send to UI thread to
      *  be treated there.
      */
+    private UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
+        @Override
+        public void onReceivedData(byte[] arg0) {
+            try {
+                String data = new String(arg0, "UTF-8");
+                EventBus.getDefault().post(new ResponseEvent(data));
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+/*
+
+   private byte[] currentMessage = null; // saving message if need to resend
+   private boolean resent = false;
+
     private UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
         @Override
         public void onReceivedData(byte[] arg0) {
@@ -90,13 +112,7 @@ public class UsbService extends Service {
             }
         }
     };
-
-    private boolean responseIsValid(String response){
-        if(response.contains("Unknown command")){
-            return false;
-        }
-        return true;
-    }
+*/
 
     /*
      * Different notifications from OS will be received here (USB attached, detached, permission responses...)
@@ -173,7 +189,6 @@ public class UsbService extends Service {
      */
     public void write(byte[] data) {
         Log.d("UsbService", "write-start");
-        currentMessage = data;
         if (serialPort != null)
             serialPort.write(data);
         Log.d("UsbService", "write-end");

@@ -25,6 +25,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
@@ -51,56 +53,31 @@ public class MainActivity extends AppCompatActivity{
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-/*
-    private TextView logTextView;
-    private Button infoButton;
-    private Button showDateButton;
-    private Button loggaButton;
-    private Button showLonButton;
-    private Button showLatButton;
-    private Button autoButton;
-    private Button setDateButton;
-    private Button upButton;
-    private Button leftButton;
-    private Button rightButton;
-    private Button downButton;
-    private Button stopButton;
-    private Button clearButton;
-    private Button setPosButton;
+    private CommandHandler commandHandler;
 
-    private GpsLocation gpsLocation;
-    private Location location;
-    private LocationListener locationListener;
-    private boolean setPosButtonBoolean = true;
-    private String provider;
-    private Double latitude;
-    private Double longitude;
-*/
     private static final double POS_CONTROL_VALUE = 9001.;
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 9001;
     private static final int THREAD_SLEEP_TIMER = 50;
-/*
-    private UsbService usbService;
-    private MyHandler mHandler;
 
-
-
+    /*
+    *  Service connection to the UsbService
+    */
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            logTextView.append("onServiceConnected()");
+            Log.d("USBservice","onServiceConnected()");
             usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(mHandler);
+            usbService.setHandler(usbServiceHandler);
+            commandHandler.updateService(usbService);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            logTextView.append("onServiceDisconnected()");
+            Log.d("USBservice","onServiceDisconnected()");
             usbService = null;
+            commandHandler.updateService(usbService);
         }
     };
-
-*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +86,7 @@ public class MainActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         usbServiceHandler = new UsbServiceHandler(this);
-
+        commandHandler = new CommandHandler(usbService);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location){
@@ -148,17 +125,31 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         setFilters();  // Start listening notifications from UsbService
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
+        EventBus.getDefault().register(commandHandler);
     }
 
     @Override
     public void onPause() {
         unregisterReceiver(mUsbReceiver);
         unbindService(usbConnection);
+        EventBus.getDefault().unregister(commandHandler);
+        commandHandler.clearQueue();
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     /*
@@ -173,24 +164,6 @@ public class MainActivity extends AppCompatActivity{
         //adapter.addFragment(new FourFragment(), "log");
         viewPager.setAdapter(adapter);
     }
-
-    /*
-     *  Service connection to the UsbService
-     */
-    private final ServiceConnection usbConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            Log.d("USBservice","onServiceConnected()");
-            usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(usbServiceHandler);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            Log.d("USBservice","onServiceDisconnected()");
-            usbService = null;
-        }
-    };
 
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
         if (!UsbService.SERVICE_CONNECTED) {
@@ -307,7 +280,7 @@ public class MainActivity extends AppCompatActivity{
                 })
                 .show();
     }
-
+/*
     private void sendCommand(String cmd){
         String data = cmd + "\r";  //don't forget the '\r'
         if (usbService != null) {
@@ -316,7 +289,7 @@ public class MainActivity extends AppCompatActivity{
             Log.d("sendCommand()", "usbService is null, cant send command");
         }
     }
-
+*/
 
     /*
     *   Buttonlisteners
