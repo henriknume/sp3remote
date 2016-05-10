@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity{
         unregisterReceiver(mUsbReceiver);
         unbindService(usbConnection);
         EventBus.getDefault().unregister(commandHandler);
-        commandHandler.clearQueue();
         super.onPause();
     }
 

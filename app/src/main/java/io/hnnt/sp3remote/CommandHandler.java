@@ -23,12 +23,10 @@ public class CommandHandler {
     public static final String TAG = "CommandHandler.java";
 
     private UsbService usbService;
-    private Queue<CommandEvent> commandQueue;
     private String currentCommand;
 
     public CommandHandler( UsbService usbService){
         this.usbService = usbService;
-        commandQueue = new LinkedList<>();
     }
 
     /*
@@ -36,10 +34,11 @@ public class CommandHandler {
     */
     @Subscribe
     public void onCommandEvent(CommandEvent commandEvent){
-        Log.d(TAG, "onCommandEvent() A -Adding commandevent");
-        commandQueue.add(commandEvent);
-        Log.d(TAG, "onCommandEvent() size:" + commandQueue.size());
-        sendCommand();
+        Log.d(TAG, "onCommandEvent()");
+        if( usbService != null){
+            currentCommand = commandEvent.command;
+            sendCommand();
+        }
     }
 
 
@@ -47,17 +46,12 @@ public class CommandHandler {
     *   take events from first in queue and send to service
     */
     private void sendCommand(){
-        Log.d(TAG, "sendCommand()");
-        currentCommand = null;
-        CommandEvent currentCommandEvent = commandQueue.poll();
-        if(currentCommandEvent != null){
-            currentCommand = currentCommandEvent.command;
-            if(usbService != null && currentCommand != null){
-                usbService.write(currentCommand.getBytes());
-            }
+        if(usbService != null && currentCommand != null){
+            Log.d(TAG, "sendCommand() - send");
+            usbService.write(currentCommand.getBytes());
         }else{
-            Log.w(TAG, "sendcommand() - no usbservice, command not sent");
-            clearQueue();
+            Log.d(TAG, "sendcommand() - no usbservice, command not sent");
+            currentCommand = null;
         }
     }
 
@@ -78,33 +72,25 @@ public class CommandHandler {
     @Subscribe
     public void onResponseEvent(ResponseEvent responseEvent){
         Log.d(TAG, "onResponseEvent()");
-
         if(responseEvent.message.contains("Unknown command")){
-            Log.d(TAG, "onResponseEvent() RS");
+            Log.d(TAG, "onResponseEvent() resend");
             reSendLastCommand();
         }else{
-            if(responseEvent != null && responseEvent.message != null){
+            //placeholder
+            EventBus.getDefault().post(new InfoEvent(responseEvent.message));
 
-                //placeholder
-                EventBus.getDefault().post(new InfoEvent(responseEvent.message));
+            //should parse the response message and send to the right fragment
 
-                //should parse the response message and send to the right fragment
-
-                /*
-                    InfoEvent
-                    SettingsEvent
-                */
-            }
-            sendCommand();
+            /*
+                InfoEvent
+                SettingsEvent
+            */
         }
     }
 
     /*
     *
     * */
-    public void clearQueue(){
-        commandQueue.clear();
-    }
 
     public void updateService(UsbService usbService){
         this.usbService = usbService;
