@@ -10,6 +10,7 @@
         <item name="colorPrimary">@color/colorPrimaryDarkGreen</item>
         <item name="colorPrimaryDark">@color/colorPrimaryGreen</item>
         <item name="colorAccent">@color/colorAccentDarkGray</item>
+        <item name="colorButtonNormal">@color/colorPrimaryGreen</item>
     </style>
 
 </resources>

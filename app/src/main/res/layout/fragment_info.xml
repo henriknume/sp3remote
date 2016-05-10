@@ -43,15 +43,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="@string/info_button_text"
-                android:textStyle="bold"
-                android:background="@color/colorBlack"
-                android:textColor="@color/textColorPrimary"
                 android:layout_weight="1"
                 android:layout_gravity="top"
                 android:gravity="center"
                 android:layout_marginRight="10sp"
-                android:layout_marginLeft="10sp"
-                android:textSize="30sp" />
+                android:layout_marginLeft="10sp"/>
 
             <Button
                 android:id="@+id/clear_button"

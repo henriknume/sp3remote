@@ -184,11 +184,7 @@
                 android:layout_gravity="top"
                 android:gravity="center"
                 android:layout_marginRight="10sp"
-                android:layout_marginLeft="10sp"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="30dp"
-                android:textStyle="bold"
-                android:background="@android:color/black" />
+                android:layout_marginLeft="10sp" />
         </TableRow>
     </TableLayout>
 

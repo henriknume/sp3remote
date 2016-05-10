@@ -58,7 +58,7 @@
     <string name="run_auto_button_text">Run Auto</string>
 
     <!-- Log Fragment text -->
-    <string name="start_log_button_text">Start log___</string>
+    <string name="start_log_button_text">Start log</string>
     <string name="stop_log_button_text">Stop log</string>
     <string name="send_log_button_text">Send log</string>
     <string name="logtextview_default_text">""</string>

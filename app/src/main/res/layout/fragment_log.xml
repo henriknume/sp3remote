@@ -42,72 +42,36 @@
             android:layout_weight="1"
             android:layout_marginBottom="20dp">
 
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="Start Log"
-                    android:id="@+id/start_log_button"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:background="@color/colorBlack"
-                    android:textColor="@color/textColorPrimary"
-
-                    />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <TableRow
+            <Button
+                android:id="@+id/start_log_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1">
+                android:text="@string/start_log_button_text"
+                android:layout_weight="1"
+                />
 
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="Stop Log"
-                    android:id="@+id/stop_log_button"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:background="@color/colorBlack"
-                    android:textColor="@color/textColorPrimary"
-
-                    android:layout_marginLeft="55dp" />
-            </TableRow>
+            <Button
+                android:id="@+id/stop_log_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/stop_log_button_text"
+                android:layout_weight="1" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp" >
 
-            <TableRow
-                android:layout_width="fill_parent"
+            <Button
+                android:id="@+id/send_log_button"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_gravity="center">
-
-                <Button
-                    android:id="@+id/send_log_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:text="@string/send_log_button_text"
-                    android:textStyle="bold"
-                    android:background="@color/colorBlack"
-                    android:textColor="@color/textColorPrimary"
-                    android:layout_gravity="top|center"
-                    android:gravity="center"
-                    android:textSize="28dp"
-                    android:layout_weight="2" />
-
-            </TableRow>
+                android:text="@string/send_log_button_text"
+                android:layout_gravity="top|center"
+                android:gravity="center"
+                android:layout_weight="2" />
 
         </TableRow>
 
