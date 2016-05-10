@@ -56,6 +56,12 @@
 
     <!-- Control Fragment text -->
     <string name="run_auto_button_text">Run Auto</string>
+    <string name="toast_run_auto_text">Running auto...</string>
+    <string name="toast_up_button_text">Tilting up...</string>
+    <string name="toast_left_button_text">Turning left...</string>
+    <string name="toast_right_button_text">Turning right...</string>
+    <string name="toast_down_button_text">Tilting down...</string>
+    <string name="toast_stop_button_text">Stopping...</string>
 
     <!-- Log Fragment text -->
     <string name="toggle_log_button_text">Toggle log</string>

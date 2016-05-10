@@ -29,11 +29,8 @@ public class LogFragment extends Fragment{
 
     public static final String TAG = "LogFragment.java";
 
-    public Context fcontext;
-    private Button toggleLogButton;
-    private Button clearLogButton;
-    private Button sendLogButton;
-
+    public  Context fcontext;
+    private Button toggleLogButton, clearLogButton, sendLogButton;
 
     private TextView logTextView;
 
@@ -52,11 +49,11 @@ public class LogFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log, container, false);
-        logTextView = (TextView) v.findViewById(R.id.log_textview);
+        logTextView     = (TextView) v.findViewById(R.id.log_textview);
 
-        toggleLogButton = (Button) v.findViewById(R.id.toggle_log_button);
-        clearLogButton = (Button) v.findViewById(R.id.clear_log_button);
-        sendLogButton = (Button) v.findViewById(R.id.send_log_button);
+        toggleLogButton = (Button)   v.findViewById(R.id.toggle_log_button);
+        clearLogButton  = (Button)   v.findViewById(R.id.clear_log_button);
+        sendLogButton   = (Button)   v.findViewById(R.id.send_log_button);
 
         createButtonListeners();
         return v;
