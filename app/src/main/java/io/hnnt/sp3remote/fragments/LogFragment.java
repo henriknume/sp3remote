@@ -5,22 +5,36 @@ package io.hnnt.sp3remote.fragments;
  */
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.hnnt.sp3remote.R;
+import io.hnnt.sp3remote.events.CommandEvent;
+import io.hnnt.sp3remote.events.InfoEvent;
 
 public class LogFragment extends Fragment{
 
+    public static final String TAG = "LogFragment.java";
+
+    public Context fcontext;
+    private Button toggleLogButton;
+    private Button clearLogButton;
     private Button sendLogButton;
-    private View v;
+
+
     private TextView logTextView;
 
     public LogFragment() {
@@ -32,13 +46,71 @@ public class LogFragment extends Fragment{
         super.onCreate(savedInstanceState);
     }
 
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        // TODO Auto-generated method stub
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_log, container, false);
         logTextView = (TextView) v.findViewById(R.id.log_textview);
+
+        toggleLogButton = (Button) v.findViewById(R.id.toggle_log_button);
+        clearLogButton = (Button) v.findViewById(R.id.clear_log_button);
         sendLogButton = (Button) v.findViewById(R.id.send_log_button);
+
+        createButtonListeners();
+        return v;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart()");
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        fcontext = getContext();
+        super.onResume();
+    }
+
+    @Override
+    public void onStop(){
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onInfoEvent(InfoEvent event){
+        Log.d(TAG, "onMessageEvent(), message: " + event.message + "\n");
+        logTextView.append(event.message + "\n");
+    }
+
+
+    private void createButtonListeners(){
+
+        toggleLogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "toggleLogButton pressed");
+                EventBus.getDefault().post(new CommandEvent("logga"));
+            }
+        });
+
+        clearLogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "clearLogButton pressed");
+                logTextView.setText(getString(R.string.log_textview_text));
+            }
+        });
+
         sendLogButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -46,14 +118,6 @@ public class LogFragment extends Fragment{
                 sendEmail();
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_log, container, false);
-        return v;
     }
 
     private void sendEmail(){

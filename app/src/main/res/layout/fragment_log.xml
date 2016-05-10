@@ -30,7 +30,7 @@
     </FrameLayout>
 
     <TableLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -39,22 +39,20 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginBottom="20dp">
 
             <Button
-                android:id="@+id/start_log_button"
+                android:id="@+id/toggle_log_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/start_log_button_text"
-                android:layout_weight="1"
-                />
+                android:text="@string/toggle_log_button_text"
+                android:layout_weight="1" />
 
             <Button
-                android:id="@+id/stop_log_button"
+                android:id="@+id/clear_log_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/stop_log_button_text"
+                android:text="@string/clear_log_button_text"
                 android:layout_weight="1" />
 
         </TableRow>
@@ -62,7 +60,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp" >
+            android:layout_marginBottom="20dp">
 
             <Button
                 android:id="@+id/send_log_button"
@@ -70,7 +68,6 @@
                 android:layout_height="fill_parent"
                 android:text="@string/send_log_button_text"
                 android:layout_gravity="top|center"
-                android:gravity="center"
                 android:layout_weight="2" />
 
         </TableRow>
