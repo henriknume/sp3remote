@@ -176,7 +176,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/info_button"
+                android:id="@+id/sync_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="@string/sync_button_text"
