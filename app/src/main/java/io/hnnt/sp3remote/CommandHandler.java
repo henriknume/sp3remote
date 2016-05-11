@@ -5,6 +5,7 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
@@ -21,12 +22,17 @@ public class CommandHandler {
 
 
     public static final String TAG = "CommandHandler.java";
+    public static final String START_OF_BUFFER_TAG = "[START]";
+    public static final String END_OF_BUFFER_TAG = "[END]";
 
     private UsbService usbService;
     private String currentCommand;
 
+    private ArrayList<String> inputbuffer;
+
     public CommandHandler( UsbService usbService){
         this.usbService = usbService;
+        this.inputbuffer = new ArrayList<>();
     }
 
     /*
@@ -35,10 +41,16 @@ public class CommandHandler {
     @Subscribe
     public void onCommandEvent(CommandEvent commandEvent){
         Log.d(TAG, "onCommandEvent()");
+        clearBuffer();
         if( usbService != null){
             currentCommand = commandEvent.command;
             sendCommand();
         }
+    }
+
+    private void clearBuffer(){
+        inputbuffer.clear();
+        inputbuffer.add(START_OF_BUFFER_TAG);
     }
 
 
@@ -56,7 +68,7 @@ public class CommandHandler {
     }
 
     private void reSendLastCommand(){
-        Log.d(TAG, "reSendLastCommand()," + "usbser:" + (usbService != null) + "currCmd:" + currentCommand.trim());
+        Log.d(TAG, "reSendLastCommand()");
         if(usbService != null && currentCommand != null) {
             usbService.write(currentCommand.getBytes());
             currentCommand = null;
@@ -72,25 +84,33 @@ public class CommandHandler {
     @Subscribe
     public void onResponseEvent(ResponseEvent responseEvent){
         Log.d(TAG, "onResponseEvent()");
-        if(responseEvent.message.contains("Unknown command")){
-            Log.d(TAG, "onResponseEvent() resend");
-            reSendLastCommand();
-        }else{
-            //placeholder
-            EventBus.getDefault().post(new InfoEvent(responseEvent.message));
+        String data = responseEvent.message;
+        inputbuffer.add(data);
 
-            //should parse the response message and send to the right fragment
-
-            /*
-                InfoEvent
-                SettingsEvent
-            */
+        if(data.contains("#")){
+            inputbuffer.add(END_OF_BUFFER_TAG);
+            String allLines = "";
+            // concat
+            for(String s : inputbuffer){
+                allLines += s;
+            }
+            // remove all CRLF and space
+            String trimmedResponse = allLines.replaceAll("(\\r|\\n|\\s)", "");
+            // remove only CR
+            String response = allLines.replaceAll("(\\r)", "");
+            //Log.d(TAG, "--response:>" + response.replaceAll("(\\r)", "") + "<");
+            //Log.d(TAG, "--trimmedresponse:>" + trimmedResponse + "<");
+            if(trimmedResponse.contains("Unknowncommand")){
+                Log.d(TAG, "onResponseEvent() resend");
+                clearBuffer();
+                reSendLastCommand();
+            }else{
+                Log.d(TAG, "onResponseEvent() send");
+                EventBus.getDefault().post(new InfoEvent(response));
+                clearBuffer();
+            }
         }
     }
-
-    /*
-    *
-    * */
 
     public void updateService(UsbService usbService){
         this.usbService = usbService;

@@ -33,6 +33,7 @@ import io.hnnt.sp3remote.events.InfoEvent;
 public class InfoFragment extends Fragment{
 
     public static final String TAG = "InfoFragment.java";
+    public static final String TAG_EVENTS = "commandhandler";
     Context fcontext;
     Button infoButton;
     Button clearButton;
@@ -88,15 +89,17 @@ public class InfoFragment extends Fragment{
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInfoEvent(InfoEvent event){
-        Log.d(TAG, "onMessageEvent(), message: " + event.message + "\n");
-        infoTextView.append(event.message + "\n");
+        infoTextView.append(event.getMorningPosDiff() + "\n");
+        infoTextView.append(event.getSoftwareRelease() + "\n");
+        infoTextView.append(event.getCalcSunPosition() + "\n");
+        infoTextView.append(event.getCurrentPosition() + "\n");
     }
 
     private void createButtonListeners(){
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "infobutton pressed");
+                Log.d(TAG_EVENTS, "infobutton pressed");
                 EventBus.getDefault().post(new CommandEvent("info"));
             }
         });
@@ -104,7 +107,7 @@ public class InfoFragment extends Fragment{
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "clearbutton pressed");
+                Log.d(TAG_EVENTS, "clearbutton pressed");
                 infoTextView.setText("cleared\n");
             }
         });
