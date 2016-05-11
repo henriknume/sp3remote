@@ -39,8 +39,19 @@
 
     <!-- Info Fragment text -->
 
-    <string name="info_softwareversion_label">Software Version</string>
     <string name="sync_button_text">Sync</string>
+
+    <string name="info_label_software_release">Software release:</string>
+    <string name="info_label_current_pos">Current position:</string>
+    <string name="info_label_calc_sun_pos">Calculated sun position:</string>
+    <string name="info_label_tilt_zero_pos">Tilt zero position:</string>
+    <string name="info_label_sensor_zero_pos">Sensor zero position:</string>
+    <string name="info_label_nr_sunny_days">Number of sunny days:</string>
+    <string name="info_label_last_sun_time">Last sun time:</string>
+    <string name="info_label_nr_of_resets">Number of Watchdog resets:</string>
+    <string name="info_label_morning_pos_diff">Morning position difference:</string>
+    <string name="info_label_sun_today">Sun today:</string>
+
 
 
     <!-- Settings Fragment text -->

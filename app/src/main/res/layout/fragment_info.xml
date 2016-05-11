@@ -8,57 +8,186 @@
     android:orientation="vertical">
 
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
-        android:layout_marginTop="10dp">
-
         <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/scrollView" >
-
-            <TextView
-                android:id="@+id/info_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                 />
-        </ScrollView>
-    </FrameLayout>
-
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="0dp">
-
-        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_weight="20">
 
-            <Button
-                android:id="@+id/info_button"
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/info_button_text"
-                android:layout_weight="1"
-                android:layout_gravity="top"
-                android:gravity="center"
-                android:layout_marginRight="10sp"
-                android:layout_marginLeft="10sp"/>
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/clear_button"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/clear_button_text"
-                android:layout_weight="1"
-                android:layout_gravity="top"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/info_label_0_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_software_release" />
+                <TextView
+                    android:id="@+id/info_field_0_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
 
-        </TableRow>
-    </TableLayout>
+
+                <TextView
+                    android:id="@+id/info_label_1_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_current_pos" />
+                <TextView
+                    android:id="@+id/info_field_1_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+
+                <TextView
+                    android:id="@+id/info_label_2_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_calc_sun_pos" />
+                <TextView
+                    android:id="@+id/info_field_2_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+
+                <TextView
+                    android:id="@+id/info_label_3_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_tilt_zero_pos" />
+                <TextView
+                    android:id="@+id/info_field_3_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+
+
+                <TextView
+                    android:id="@+id/info_label_4_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_sensor_zero_pos" />
+                <TextView
+                    android:id="@+id/info_field_4_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+                <TextView
+                    android:id="@+id/info_label_5_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_nr_sunny_days" />
+                <TextView
+                    android:id="@+id/info_field_5_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+                <TextView
+                    android:id="@+id/info_label_6_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_last_sun_time" />
+                <TextView
+                    android:id="@+id/info_field_6_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+                <TextView
+                    android:id="@+id/info_label_7_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_nr_of_resets" />
+                <TextView
+                    android:id="@+id/info_field_7_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+                <TextView
+                    android:id="@+id/info_label_8_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_morning_pos_diff" />
+                <TextView
+                    android:id="@+id/info_field_8_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+                <TextView
+                    android:id="@+id/info_label_9_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorAccentDarkGray"
+                    android:text="@string/info_label_sun_today" />
+                <TextView
+                    android:id="@+id/info_field_9_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorBlack"
+                    android:text="Medium Text" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/info_button"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:text="@string/info_button_text"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginRight="10sp"
+            android:layout_marginLeft="10sp"
+            android:textSize="20dp"
+            android:layout_gravity="bottom" />
 
 </LinearLayout>
