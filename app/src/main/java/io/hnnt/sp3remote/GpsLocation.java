@@ -8,7 +8,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 /**
@@ -21,9 +20,9 @@ public class GpsLocation implements LocationListener {
     private static final double POS_CONTROL_VALUE = 9001.;
 
 
-    protected GpsLocation(){ }
+    public GpsLocation(){ }
 
-    protected void getLocationManager(String provider, Context context, Location myLocation, LocationListener locationListener){
+    public void getLocationManager(String provider, Context context, Location myLocation, LocationListener locationListener){
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria,true);
@@ -39,7 +38,7 @@ public class GpsLocation implements LocationListener {
             locationManager.requestSingleUpdate(provider,locationListener, null );
     }
 
-    protected Location getLastKnownLocation(){
+    public Location getLastKnownLocation(){
         return location;
     }
 

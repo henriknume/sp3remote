@@ -23,8 +23,8 @@
 
     <!-- Permission check -->
     <string name="alertdialog_title">SP3 Remote Permission</string>
-    <string name="alertdialog_message">This permission is needed to utilize the set pos option</string>
-    <string name="toast_message_no_valid_loc">No valid location was found. Check Positioning settings and try again</string>
+    <string name="alertdialog_message">This permission is needed to utilize the set pos option </string>
+    <string name="toast_message_no_valid_loc">No valid location was found. Check Positioning settings and try again &#8230;</string>
 
     <string name="ok_button_text">ok</string>
     <string name="deny_button_text">Deny</string>
@@ -53,15 +53,18 @@
     <string name="longitude_label_textview_text">Longitude:</string>
     <string name="latitude_field_textview_text">""</string>
     <string name="longitude_field_textview_text">""</string>
+    <string name="toast_position_not_valid">No valid location was found. Check Positioning settings and try again &#8230;</string>
+    <string name="toast_syncing_device_start">Syncing the device, please wait until completed &#8230;</string>
+    <string name="toast_syncing_device_finish">Sync finished &#8230;</string>
 
     <!-- Control Fragment text -->
     <string name="run_auto_button_text">Run Auto</string>
-    <string name="toast_run_auto_text">Running auto...</string>
-    <string name="toast_up_button_text">Tilting up...</string>
-    <string name="toast_left_button_text">Turning left...</string>
-    <string name="toast_right_button_text">Turning right...</string>
-    <string name="toast_down_button_text">Tilting down...</string>
-    <string name="toast_stop_button_text">Stopping...</string>
+    <string name="toast_run_auto_text">Running auto &#8230;</string>
+    <string name="toast_up_button_text">Tilting up &#8230;</string>
+    <string name="toast_left_button_text">Turning left &#8230;</string>
+    <string name="toast_right_button_text">Turning right &#8230;</string>
+    <string name="toast_down_button_text">Tilting down &#8230;</string>
+    <string name="toast_stop_button_text">Stopping &#8230;</string>
 
     <!-- Log Fragment text -->
     <string name="toggle_log_button_text">Toggle log</string>
