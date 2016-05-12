@@ -104,7 +104,7 @@ public class LogFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "clearLogButton pressed");
-                logTextView.setText(getString(R.string.log_textview_text));
+                logTextView.setText(getString(R.string.logtextview_default_text));
             }
         });
 

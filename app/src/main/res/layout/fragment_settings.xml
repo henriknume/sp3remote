@@ -166,26 +166,15 @@
         </TableLayout>
     </FrameLayout>
 
-    <TableLayout
+    <Button
+        android:id="@+id/sync_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/sync_button"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/sync_button_text"
-                android:layout_weight="1"
-                android:layout_gravity="top"
-                android:gravity="center"
-                android:layout_marginRight="10sp"
-                android:layout_marginLeft="10sp" />
-        </TableRow>
-    </TableLayout>
+        android:text="@string/sync_button_text"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="20sp" />
 
 </LinearLayout>

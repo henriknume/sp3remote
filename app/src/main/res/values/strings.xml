@@ -3,24 +3,6 @@
     <string name="app_name">SP3 Remote</string>
 
 
-    <!-- Old layout button texts, remove when not needed anylonger -->
-    <string name="info_button_text">Info</string>
-    <string name="show_date_button_text">Show Date</string>
-    <string name="logga_button_text">Logga</string>
-    <string name="show_lon_button_text">Lon</string>
-    <string name="up_button_text">Up</string>
-    <string name="show_lat_button_text">Lat</string>
-    <string name="left_button_text">Left</string>
-    <string name="stop_button_text">Stop</string>
-    <string name="right_button_text">Right</string>
-    <string name="down_button_text">Down</string>
-    <string name="auto_button_text">Run Auto</string>
-    <string name="set_date_button_text">Set Date</string>
-    <string name="clear_button_text">Clear</string>
-    <string name="log_textview_text">""</string>
-    <string name="set_pos_button_text">Set Pos</string>
-
-
     <!-- Permission check -->
     <string name="alertdialog_title">SP3 Remote Permission</string>
     <string name="alertdialog_message">This permission is needed to utilize the set pos option </string>
@@ -39,7 +21,7 @@
 
     <!-- Info Fragment text -->
 
-    <string name="sync_button_text">Sync</string>
+    <string name="info_button_text">Info</string>
 
     <string name="info_label_software_release">Software release:</string>
     <string name="info_label_current_pos">Current position:</string>
@@ -51,7 +33,7 @@
     <string name="info_label_nr_of_resets">Number of Watchdog resets:</string>
     <string name="info_label_morning_pos_diff">Morning position difference:</string>
     <string name="info_label_sun_today">Sun today:</string>
-
+    <string name="info_field_medium_text_empty">""</string>
 
 
     <!-- Settings Fragment text -->
@@ -67,6 +49,7 @@
     <string name="toast_position_not_valid">No valid location was found. Check Positioning settings and try again &#8230;</string>
     <string name="toast_syncing_device_start">Syncing the device, please wait until completed &#8230;</string>
     <string name="toast_syncing_device_finish">Sync finished &#8230;</string>
+    <string name="sync_button_text">Sync</string>
 
     <!-- Control Fragment text -->
     <string name="run_auto_button_text">Run Auto</string>

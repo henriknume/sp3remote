@@ -249,9 +249,10 @@ public class SettingsFragment extends Fragment {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            lat = location.getLatitude();
-            lon = location.getLongitude();
-
+            if(location != null) {
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+            }
             return null;
         }
 

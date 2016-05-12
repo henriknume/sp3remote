@@ -47,13 +47,13 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/show_date_button_text"
+                android:text="date"
                 android:id="@+id/show_date_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/logga_button_text"
+                android:text="@string/toggle_log_button_text"
                 android:id="@+id/logga_button"
                 android:layout_weight="1" />
         </TableRow>
@@ -65,19 +65,19 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/show_lon_button_text"
+                android:text="lon"
                 android:id="@+id/show_lon_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/up_button_text"
+                android:text="up"
                 android:id="@+id/up_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/show_lat_button_text"
+                android:text="lat"
                 android:id="@+id/show_lat_button"
                 android:layout_weight="1" />
         </TableRow>
@@ -89,19 +89,19 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/left_button_text"
+                android:text="left"
                 android:id="@+id/left_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stop_button_text"
+                android:text="stop"
                 android:id="@+id/stop_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/right_button_text"
+                android:text="right"
                 android:id="@+id/right_button"
                 android:layout_weight="1" />
         </TableRow>
@@ -113,19 +113,19 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/auto_button_text"
+                android:text="auto"
                 android:id="@+id/auto_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/down_button_text"
+                android:text="down"
                 android:id="@+id/down_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/set_date_button_text"
+                android:text="set date"
                 android:id="@+id/set_date_button"
                 android:layout_weight="1" />
         </TableRow>
@@ -137,13 +137,13 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/clear_button_text"
+                android:text="clear"
                 android:id="@+id/clear_button"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/set_pos_button_text"
+                android:text="set pos"
                 android:id="@+id/set_pos_button"
                 android:layout_weight="1" />
         </TableRow>

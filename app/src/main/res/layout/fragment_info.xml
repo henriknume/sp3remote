@@ -8,15 +8,20 @@
     android:orientation="vertical">
 
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_weight="20">
+            android:layout_gravity="top">
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -32,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
 
                 <TextView
@@ -48,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
 
                 <TextView
@@ -64,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
 
                 <TextView
@@ -80,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
 
 
@@ -97,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
                 <TextView
                     android:id="@+id/info_label_5_textview"
@@ -112,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
                 <TextView
                     android:id="@+id/info_label_6_textview"
@@ -127,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
                 <TextView
                     android:id="@+id/info_label_7_textview"
@@ -142,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
                 <TextView
                     android:id="@+id/info_label_8_textview"
@@ -157,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
                 <TextView
                     android:id="@+id/info_label_9_textview"
@@ -172,22 +177,22 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorBlack"
-                    android:text="Medium Text" />
+                    android:text="@string/info_field_medium_text_empty" />
 
             </LinearLayout>
 
         </ScrollView>
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/info_button"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:text="@string/info_button_text"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginRight="10sp"
-            android:layout_marginLeft="10sp"
-            android:textSize="20dp"
-            android:layout_gravity="bottom" />
+    <Button
+        android:id="@+id/info_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/info_button_text"
+        android:gravity="center"
+        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10sp"
+        android:textSize="20sp" />
+
 
 </LinearLayout>
