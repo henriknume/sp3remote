@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:layout_marginTop="10dp">
+        android:layout_margin="10dp">
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -33,19 +33,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginRight="10dp">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/toggle_log_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="@string/toggle_log_button_text"
+                android:textSize="20sp"
                 android:layout_weight="1" />
 
             <Button
@@ -53,21 +52,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="@string/clear_log_button_text"
+                android:textSize="20sp"
                 android:layout_weight="1" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/send_log_button"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:text="@string/send_log_button_text"
-                android:layout_gravity="top|center"
+                android:textSize="20sp"
                 android:layout_weight="2" />
 
         </TableRow>
