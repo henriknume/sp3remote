@@ -162,7 +162,7 @@ public class SettingsFragment extends Fragment {
                 getDateAndTime();
 
                 EventBus.getDefault()
-                        .post(new CommandEvent("date " + dateTextView.getText().toString() + " " + timeTextView.getText().toString()));
+                        .post(new CommandEvent("date " + dateTextView.getText().toString() + " " + timeTextView.getText().toString(), CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
 
             }
@@ -272,9 +272,9 @@ public class SettingsFragment extends Fragment {
             }
             if(syncLocation) {
                 Log.d(TAG, "Lat updated");
-                EventBus.getDefault().post(new CommandEvent("lat " + lat));
+                EventBus.getDefault().post(new CommandEvent("lat " + lat, CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 Log.d(TAG, "Lon updated");
-                EventBus.getDefault().post(new CommandEvent("lon " + lon));
+                EventBus.getDefault().post(new CommandEvent("lon " + lon, CommandEvent.TARGET_SETTINGS_FRAGMENT));
             }
             syncLocation = false;
         }

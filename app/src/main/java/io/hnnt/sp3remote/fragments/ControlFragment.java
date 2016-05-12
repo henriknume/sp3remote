@@ -90,7 +90,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "upButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run u"));
+                EventBus.getDefault().post(new CommandEvent("run u", CommandEvent.TARGET_CONTROL_FRAGMENT));
                 Toast.makeText(fcontext,getString(R.string.toast_up_button_text), Toast.LENGTH_SHORT).show();
             }
         });
@@ -99,7 +99,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "leftButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run l"));
+                EventBus.getDefault().post(new CommandEvent("run l", CommandEvent.TARGET_CONTROL_FRAGMENT));
                 Toast.makeText(fcontext,getString(R.string.toast_left_button_text), Toast.LENGTH_SHORT).show();
             }
         });
@@ -108,7 +108,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "rightButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run r"));
+                EventBus.getDefault().post(new CommandEvent("run r", CommandEvent.TARGET_CONTROL_FRAGMENT));
                 Toast.makeText(fcontext,getString(R.string.toast_right_button_text), Toast.LENGTH_SHORT).show();
             }
         });
@@ -117,7 +117,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "downButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run d"));
+                EventBus.getDefault().post(new CommandEvent("run d", CommandEvent.TARGET_CONTROL_FRAGMENT));
                 Toast.makeText(fcontext,getString(R.string.toast_down_button_text), Toast.LENGTH_SHORT).show();
             }
         });
@@ -126,7 +126,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "stopButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run stop"));
+                EventBus.getDefault().post(new CommandEvent("run stop", CommandEvent.TARGET_CONTROL_FRAGMENT));
                 Toast.makeText(fcontext,getString(R.string.toast_stop_button_text), Toast.LENGTH_SHORT).show();
             }
         });
@@ -135,7 +135,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "runAutoButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run auto"));
+                EventBus.getDefault().post(new CommandEvent("run auto", CommandEvent.TARGET_CONTROL_FRAGMENT));
                 Toast.makeText(fcontext,getString(R.string.toast_run_auto_text), Toast.LENGTH_SHORT).show();
             }
         });
