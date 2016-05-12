@@ -73,6 +73,7 @@ public class LogFragment extends Fragment{
 
     @Override
     public void onResume(){
+        Log.d(TAG, "onResume()");
         fcontext = getContext();
         super.onResume();
     }

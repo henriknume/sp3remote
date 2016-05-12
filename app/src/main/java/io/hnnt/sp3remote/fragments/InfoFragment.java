@@ -6,28 +6,19 @@ package io.hnnt.sp3remote.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.BinderThread;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import io.hnnt.sp3remote.CommandHandler;
 import io.hnnt.sp3remote.R;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
@@ -104,6 +95,7 @@ public class InfoFragment extends Fragment{
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume()");
         fcontext = getContext();
         super.onResume();
     }

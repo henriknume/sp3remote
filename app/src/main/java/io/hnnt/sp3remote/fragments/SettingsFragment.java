@@ -3,6 +3,7 @@ package io.hnnt.sp3remote.fragments;
 /**
  * Created by nume on 2016-04-29.
  */
+
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -122,6 +123,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume()");
         fcontext = getContext();
         super.onResume();
         getDateAndTime();
@@ -184,6 +186,7 @@ public class SettingsFragment extends Fragment {
                 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             setPosButtonBoolean = true;
         } else {
+            if(setPosButtonBoolean)
             showRequestDialog();
         }
     }
