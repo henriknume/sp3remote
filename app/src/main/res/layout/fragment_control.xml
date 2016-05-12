@@ -72,8 +72,7 @@
                     android:id="@+id/up_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_arrow_up_64p"
-
+                    android:src="@drawable/up_btn_selector"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
@@ -95,7 +94,7 @@
                     android:id="@+id/left_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_arrow_left_64p"
+                    android:src="@drawable/left_btn_selector"
 
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
@@ -105,7 +104,7 @@
                     android:id="@+id/stop_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_square_stop_64p"
+                    android:src="@drawable/stop_btn_selector"
 
                     android:background="@android:color/transparent" />
 
@@ -113,7 +112,7 @@
                     android:id="@+id/right_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_arrow_right_64p"
+                    android:src="@drawable/right_btn_selector"
 
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
@@ -136,7 +135,7 @@
                     android:id="@+id/down_arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_arrow_down_64p"
+                    android:src="@drawable/down_btn_selector"
 
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
