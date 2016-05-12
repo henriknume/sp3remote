@@ -53,8 +53,8 @@ public class SettingsFragment extends Fragment {
     protected LocationListener locationListener;
     protected Location location;
     protected String provider;
-    private double lat, lon;
-
+    private double lat = POS_CONTROL_VALUE;
+    private double lon = POS_CONTROL_VALUE;
 
     private TextView timeTextView, dateTextView, latitudeTextView, longitudeTextView;
     private Button syncButton;
