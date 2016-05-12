@@ -96,7 +96,7 @@ public class LogFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "toggleLogButton pressed");
-                EventBus.getDefault().post(new CommandEvent("logga"));
+                EventBus.getDefault().post(new CommandEvent("logga", CommandEvent.TARGET_LOG_FRAGMENT));
             }
         });
 

@@ -11,8 +11,11 @@ import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import io.hnnt.sp3remote.events.CommandEvent;
+import io.hnnt.sp3remote.events.ControlEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
+import io.hnnt.sp3remote.events.LogEvent;
 import io.hnnt.sp3remote.events.ResponseEvent;
+import io.hnnt.sp3remote.events.SettingsEvent;
 
 /**
  * Created by nume on 2016-05-06.
@@ -27,6 +30,7 @@ public class CommandHandler {
 
     private UsbService usbService;
     private String currentCommand;
+    private String currentResponseTarget;
 
     private ArrayList<String> inputbuffer;
 
@@ -44,6 +48,7 @@ public class CommandHandler {
         clearBuffer();
         if( usbService != null){
             currentCommand = commandEvent.command;
+            currentResponseTarget = commandEvent.responseTarget;
             sendCommand();
         }
     }
@@ -96,8 +101,6 @@ public class CommandHandler {
             }
             // remove all CRLF and space
             String trimmedResponse = allLines.replaceAll("(\\r|\\n|\\s)", "");
-            // remove only CR
-            String response = allLines.replaceAll("(\\r)", "");
             //Log.d(TAG, "--response:>" + response.replaceAll("(\\r)", "") + "<");
             //Log.d(TAG, "--trimmedresponse:>" + trimmedResponse + "<");
             if(trimmedResponse.contains("Unknowncommand")){
@@ -105,8 +108,23 @@ public class CommandHandler {
                 clearBuffer();
                 reSendLastCommand();
             }else{
-                Log.d(TAG, "onResponseEvent() send");
-                EventBus.getDefault().post(new InfoEvent(response));
+                Log.d(TAG, "onResponseEvent() send to:" + currentResponseTarget);
+                String response = allLines.replaceAll("(\\r)", "");
+                switch (currentResponseTarget) {
+                    case CommandEvent.TARGET_INFO_FRAGMENT:
+                        EventBus.getDefault().post(new InfoEvent(response));;
+                        break;
+                    case CommandEvent.TARGET_SETTINGS_FRAGMENT:
+                        EventBus.getDefault().post(new SettingsEvent(response));;
+                        break;
+                    case CommandEvent.TARGET_CONTROL_FRAGMENT:
+                        EventBus.getDefault().post(new ControlEvent(response));;
+                        break;
+                    case CommandEvent.TARGET_LOG_FRAGMENT:
+                        EventBus.getDefault().post(new LogEvent(response));;
+                        break;
+                    default: throw new IllegalArgumentException("invalid response target");
+                }
                 clearBuffer();
             }
         }

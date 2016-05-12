@@ -1,5 +1,6 @@
 package io.hnnt.sp3remote.events;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -9,13 +10,20 @@ import java.util.Queue;
  */
 public class CommandEvent {
 
-    public final String command;
+    public static final String TARGET_INFO_FRAGMENT = "target_info_fragment";
+    public static final String TARGET_SETTINGS_FRAGMENT = "target_settings_fragment";
+    public static final String TARGET_CONTROL_FRAGMENT = "target_control_fragment";
+    public static final String TARGET_LOG_FRAGMENT = "target_log_fragment";
 
-    public CommandEvent(String command){
+    public final String command;
+    public final String responseTarget;
+
+    public CommandEvent(String command, String responseTarget){
         this.command = command + "\r";
+        this.responseTarget = responseTarget;
     }
 
-    public String getText(){
+    public String getCommand(){
         return command.trim();
     }
 

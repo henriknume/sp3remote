@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.hnnt.sp3remote.CommandHandler;
 import io.hnnt.sp3remote.R;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
@@ -71,7 +72,7 @@ public class InfoFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "infobutton pressed");
-                EventBus.getDefault().post(new CommandEvent("info"));
+                EventBus.getDefault().post(new CommandEvent("info", CommandEvent.TARGET_INFO_FRAGMENT));
             }
         });
 
