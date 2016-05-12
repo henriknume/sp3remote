@@ -25,8 +25,8 @@ public class CommandHandler {
 
 
     public static final String TAG = "CommandHandler.java";
-    public static final String START_OF_BUFFER_TAG = "[START]";
-    public static final String END_OF_BUFFER_TAG = "[END]";
+    public static final String START_OF_BUFFER_TAG = "[START]\n";
+    public static final String END_OF_BUFFER_TAG = "\n[END]\n";
 
     private UsbService usbService;
     private String currentCommand;

@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import io.hnnt.sp3remote.R;
 import io.hnnt.sp3remote.events.CommandEvent;
+import io.hnnt.sp3remote.events.ControlEvent;
 import io.hnnt.sp3remote.events.ResponseEvent;
 
 public class ControlFragment extends Fragment{
@@ -83,7 +84,32 @@ public class ControlFragment extends Fragment{
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onControlEvent(ResponseEvent event){ }
+    public void onControlEvent(ControlEvent ce){
+        Log.d(TAG, "onControlEvent()");
+        switch (ce.performedAction) {
+            case ControlEvent.PANEL_MOVING_UP:
+                Toast.makeText(fcontext, getString(R.string.toast_up_button_text), Toast.LENGTH_SHORT).show();
+                break;
+            case ControlEvent.PANEL_MOVING_LEFT:
+                Toast.makeText(fcontext, getString(R.string.toast_left_button_text), Toast.LENGTH_SHORT).show();
+                break;
+            case ControlEvent.PANEL_MOVING_RIGHT:
+                Toast.makeText(fcontext, getString(R.string.toast_right_button_text), Toast.LENGTH_SHORT).show();
+                break;
+            case ControlEvent.PANEL_MOVING_DOWN:
+                Toast.makeText(fcontext, getString(R.string.toast_down_button_text), Toast.LENGTH_SHORT).show();
+                break;
+            case ControlEvent.PANEL_STOPPED:
+                Toast.makeText(fcontext, getString(R.string.toast_stop_button_text), Toast.LENGTH_SHORT).show();
+                break;
+            case ControlEvent.PANEL_RUNNING_AUTO:
+                Toast.makeText(fcontext, getString(R.string.toast_run_auto_text), Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 
     public void createButtonListeners(){
 
@@ -92,7 +118,6 @@ public class ControlFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "upButton pressed");
                 EventBus.getDefault().post(new CommandEvent("run u", CommandEvent.TARGET_CONTROL_FRAGMENT));
-                Toast.makeText(fcontext,getString(R.string.toast_up_button_text), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -101,7 +126,6 @@ public class ControlFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "leftButton pressed");
                 EventBus.getDefault().post(new CommandEvent("run l", CommandEvent.TARGET_CONTROL_FRAGMENT));
-                Toast.makeText(fcontext,getString(R.string.toast_left_button_text), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -110,7 +134,6 @@ public class ControlFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "rightButton pressed");
                 EventBus.getDefault().post(new CommandEvent("run r", CommandEvent.TARGET_CONTROL_FRAGMENT));
-                Toast.makeText(fcontext,getString(R.string.toast_right_button_text), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -119,7 +142,6 @@ public class ControlFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "downButton pressed");
                 EventBus.getDefault().post(new CommandEvent("run d", CommandEvent.TARGET_CONTROL_FRAGMENT));
-                Toast.makeText(fcontext,getString(R.string.toast_down_button_text), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -128,7 +150,6 @@ public class ControlFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "stopButton pressed");
                 EventBus.getDefault().post(new CommandEvent("run stop", CommandEvent.TARGET_CONTROL_FRAGMENT));
-                Toast.makeText(fcontext,getString(R.string.toast_stop_button_text), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -137,7 +158,6 @@ public class ControlFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "runAutoButton pressed");
                 EventBus.getDefault().post(new CommandEvent("run auto", CommandEvent.TARGET_CONTROL_FRAGMENT));
-                Toast.makeText(fcontext,getString(R.string.toast_run_auto_text), Toast.LENGTH_SHORT).show();
             }
         });
     }
