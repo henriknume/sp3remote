@@ -45,7 +45,7 @@ public class SettingsFragment extends Fragment {
     private static final double POS_CONTROL_VALUE = 9001.;
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 9001;
     private static final int THREAD_SLEEP_TIMER_LONG = 3000;
-    private static final int POST_EVENT_SLEEP_TIME = 500;
+    private static final int POST_EVENT_SLEEP_TIME = 1000;
 
     public static final String TAG = "SettingsFragment.java";
 
@@ -147,26 +147,26 @@ public class SettingsFragment extends Fragment {
         super.onStop();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSettingsEvent(SettingsEvent event) {
-
+    /*
         Log.d(TAG, "zzz onSettingsEvent() type:" + event.responseType + "  data:" + event.responseData);
         Log.d(TAG, "zzz" +event.fullMessage);
         Log.d(TAG,"zzz----");
+  */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSettingsEvent(SettingsEvent event) {
 
-        /*
         switch (event.responseType) {
             case SettingsEvent.DATE_VALUE_SET:
-                Toast.makeText(fcontext, "A." + event.responseData, Toast.LENGTH_SHORT).show();
+                Toast.makeText(fcontext, "Time: " + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.DATE_VALUE_GET:
                 Toast.makeText(fcontext, "B." + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LAT_VALUE_SET:
-                Toast.makeText(fcontext, "C." + event.responseData, Toast.LENGTH_SHORT).show();
+                Toast.makeText(fcontext, "Lat:" + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LON_VALUE_SET:
-                Toast.makeText(fcontext, "D." + event.responseData, Toast.LENGTH_SHORT).show();
+                Toast.makeText(fcontext, "Lon:" + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LAT_VALUE_GET:
                 Toast.makeText(fcontext, "E." + event.responseData, Toast.LENGTH_SHORT).show();
@@ -178,7 +178,6 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
                 break;
         }
-        */
     }
 
     private void createButtonListeners() {
@@ -197,7 +196,7 @@ public class SettingsFragment extends Fragment {
 
                 EventBus.getDefault()
                         .post(new CommandEvent("date " + dateTextView.getText().toString() + " " + timeTextView.getText().toString(), CommandEvent.TARGET_SETTINGS_FRAGMENT));
-                Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -288,6 +287,21 @@ public class SettingsFragment extends Fragment {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
             }
+
+            if (syncLocation) {
+                try {
+                    Thread.sleep(POST_EVENT_SLEEP_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                EventBus.getDefault().post(new CommandEvent("lat " + lat, CommandEvent.TARGET_SETTINGS_FRAGMENT));
+                try {
+                    Thread.sleep(POST_EVENT_SLEEP_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                EventBus.getDefault().post(new CommandEvent("lon " + lon, CommandEvent.TARGET_SETTINGS_FRAGMENT));
+            }
             return null;
         }
 
@@ -306,20 +320,6 @@ public class SettingsFragment extends Fragment {
                 Log.d(TAG, "Position updated");
                 latitudeTextView.setText("" + lat);
                 longitudeTextView.setText("" + lon);
-            }
-            if (syncLocation) {
-                try {
-                    Thread.sleep(POST_EVENT_SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                EventBus.getDefault().post(new CommandEvent("lat " + lat, CommandEvent.TARGET_SETTINGS_FRAGMENT));
-                try {
-                    Thread.sleep(POST_EVENT_SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                EventBus.getDefault().post(new CommandEvent("lon " + lon, CommandEvent.TARGET_SETTINGS_FRAGMENT));
             }
             syncLocation = false;
         }
