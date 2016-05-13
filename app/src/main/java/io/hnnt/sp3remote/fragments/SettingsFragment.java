@@ -36,13 +36,16 @@ import java.util.TimeZone;
 import io.hnnt.sp3remote.GpsLocation;
 import io.hnnt.sp3remote.R;
 import io.hnnt.sp3remote.events.CommandEvent;
+import io.hnnt.sp3remote.events.ControlEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
+import io.hnnt.sp3remote.events.SettingsEvent;
 
 public class SettingsFragment extends Fragment {
 
     private static final double POS_CONTROL_VALUE = 9001.;
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 9001;
     private static final int THREAD_SLEEP_TIMER_LONG = 3000;
+    private static final int POST_EVENT_SLEEP_TIME = 500;
 
     public static final String TAG = "SettingsFragment.java";
 
@@ -145,8 +148,37 @@ public class SettingsFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSettingsEvent(InfoEvent event) {
+    public void onSettingsEvent(SettingsEvent event) {
 
+        Log.d(TAG, "zzz onSettingsEvent() type:" + event.responseType + "  data:" + event.responseData);
+        Log.d(TAG, "zzz" +event.fullMessage);
+        Log.d(TAG,"zzz----");
+
+        /*
+        switch (event.responseType) {
+            case SettingsEvent.DATE_VALUE_SET:
+                Toast.makeText(fcontext, "A." + event.responseData, Toast.LENGTH_SHORT).show();
+                break;
+            case SettingsEvent.DATE_VALUE_GET:
+                Toast.makeText(fcontext, "B." + event.responseData, Toast.LENGTH_SHORT).show();
+                break;
+            case SettingsEvent.LAT_VALUE_SET:
+                Toast.makeText(fcontext, "C." + event.responseData, Toast.LENGTH_SHORT).show();
+                break;
+            case SettingsEvent.LON_VALUE_SET:
+                Toast.makeText(fcontext, "D." + event.responseData, Toast.LENGTH_SHORT).show();
+                break;
+            case SettingsEvent.LAT_VALUE_GET:
+                Toast.makeText(fcontext, "E." + event.responseData, Toast.LENGTH_SHORT).show();
+                break;
+            case SettingsEvent.LON_VALUE_GET:
+                Toast.makeText(fcontext, "F." + event.responseData, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        */
     }
 
     private void createButtonListeners() {
@@ -266,6 +298,7 @@ public class SettingsFragment extends Fragment {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+
             if ((lat == POS_CONTROL_VALUE) || (lon == POS_CONTROL_VALUE)) {
                 Toast.makeText(fcontext, getString(R.string.toast_position_not_valid), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Position NOT updated");
@@ -274,10 +307,18 @@ public class SettingsFragment extends Fragment {
                 latitudeTextView.setText("" + lat);
                 longitudeTextView.setText("" + lon);
             }
-            if(syncLocation) {
-                Log.d(TAG, "Lat updated");
+            if (syncLocation) {
+                try {
+                    Thread.sleep(POST_EVENT_SLEEP_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 EventBus.getDefault().post(new CommandEvent("lat " + lat, CommandEvent.TARGET_SETTINGS_FRAGMENT));
-                Log.d(TAG, "Lon updated");
+                try {
+                    Thread.sleep(POST_EVENT_SLEEP_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 EventBus.getDefault().post(new CommandEvent("lon " + lon, CommandEvent.TARGET_SETTINGS_FRAGMENT));
             }
             syncLocation = false;

@@ -44,7 +44,7 @@ public class CommandHandler {
     */
     @Subscribe
     public void onCommandEvent(CommandEvent commandEvent){
-        Log.d(TAG, "onCommandEvent()");
+        Log.d(TAG, "onCommandEvent() :===>" + commandEvent.command.trim());
         clearBuffer();
         if( usbService != null){
             currentCommand = commandEvent.command;
@@ -89,18 +89,21 @@ public class CommandHandler {
     @Subscribe
     public void onResponseEvent(ResponseEvent responseEvent){
         Log.d(TAG, "onResponseEvent()");
-        String data = responseEvent.message;
+        String data = responseEvent.message.replaceAll("(\\r)", "");
         inputbuffer.add(data);
 
         if(data.contains("#")){
             inputbuffer.add(END_OF_BUFFER_TAG);
-            String allLines = "";
+            String response = "";
             // concat
+            StringBuilder sb = new StringBuilder("");
             for(String s : inputbuffer){
-                allLines += s;
+                sb.append(s);
             }
+            response = sb.toString();
+
             // remove all CRLF and space
-            String trimmedResponse = allLines.replaceAll("(\\r|\\n|\\s)", "");
+            String trimmedResponse = response.replaceAll("(\\r|\\n|\\s)", "");
             //Log.d(TAG, "--response:>" + response.replaceAll("(\\r)", "") + "<");
             //Log.d(TAG, "--trimmedresponse:>" + trimmedResponse + "<");
             if(trimmedResponse.contains("Unknowncommand")){
@@ -108,20 +111,19 @@ public class CommandHandler {
                 clearBuffer();
                 reSendLastCommand();
             }else{
-                Log.d(TAG, "onResponseEvent() send to:" + currentResponseTarget);
-                String response = allLines.replaceAll("(\\r)", "");
+                Log.d(TAG, "onResponseEvent() send to ===>" + currentResponseTarget);
                 switch (currentResponseTarget) {
                     case CommandEvent.TARGET_INFO_FRAGMENT:
-                        EventBus.getDefault().post(new InfoEvent(response));;
+                        EventBus.getDefault().post(new InfoEvent(response));
                         break;
                     case CommandEvent.TARGET_SETTINGS_FRAGMENT:
-                        EventBus.getDefault().post(new SettingsEvent(response));;
+                        EventBus.getDefault().post(new SettingsEvent(response));
                         break;
                     case CommandEvent.TARGET_CONTROL_FRAGMENT:
-                        EventBus.getDefault().post(new ControlEvent(response));;
+                        EventBus.getDefault().post(new ControlEvent(response));
                         break;
                     case CommandEvent.TARGET_LOG_FRAGMENT:
-                        EventBus.getDefault().post(new LogEvent(response));;
+                        EventBus.getDefault().post(new LogEvent(response));
                         break;
                     default: throw new IllegalArgumentException("invalid response target");
                 }
@@ -129,7 +131,6 @@ public class CommandHandler {
             }
         }
     }
-
     public void updateService(UsbService usbService){
         this.usbService = usbService;
     }
