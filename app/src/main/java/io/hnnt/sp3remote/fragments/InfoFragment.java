@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import io.hnnt.sp3remote.R;
+import io.hnnt.sp3remote.Sp3Model;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
 
@@ -89,6 +90,7 @@ public class InfoFragment extends Fragment{
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause()");
         super.onPause();
 
     }
@@ -97,18 +99,22 @@ public class InfoFragment extends Fragment{
     public void onResume() {
         Log.d(TAG, "onResume()");
         fcontext = getContext();
+        fillLayout();
         super.onResume();
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
+        Log.d(TAG, "onStop()");
         super.onStop();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInfoEvent(InfoEvent event){
-        row0.setText(event.getSoftwareRelease());
+        fillSP3Model(event);
+        fillLayout();
+    /*    row0.setText(event.getSoftwareRelease());
         row1.setText(event.getCurrentPosition());
         row2.setText(event.getCalcSunPosition());
         row3.setText(event.getTiltZeroPosition());
@@ -121,6 +127,38 @@ public class InfoFragment extends Fragment{
         if(event.getSunToday().equals("1")){
             sun = true;
         }
-        row9.setText("" + sun);
+        row9.setText("" + sun);*/
+    }
+
+    public void fillSP3Model(InfoEvent event){
+        Sp3Model.setInfoToFragment(0, event.getSoftwareRelease());
+        Sp3Model.setInfoToFragment(1, event.getCurrentPosition());
+        Sp3Model.setInfoToFragment(2, event.getCalcSunPosition());
+        Sp3Model.setInfoToFragment(3, event.getTiltZeroPosition());
+        Sp3Model.setInfoToFragment(4, event.getSensorZeroPosition());
+        Sp3Model.setInfoToFragment(5, event.getNrOfSunnyDays());
+        Sp3Model.setInfoToFragment(6, event.getLastSunTime());
+        Sp3Model.setInfoToFragment(7, event.getNrOfResets());
+        Sp3Model.setInfoToFragment(8, event.getMorningPosDiff());
+        boolean sun = false;
+        if(event.getCalcSunPosition().equals("1")){
+            sun = true;
+        }
+        Sp3Model.setInfoToFragment(9, ""+sun);
+    }
+
+    public void fillLayout(){
+        if(Sp3Model.getInfoToFragment(0) != null) {
+            row0.setText(Sp3Model.getInfoToFragment(0));
+            row1.setText(Sp3Model.getInfoToFragment(1));
+            row2.setText(Sp3Model.getInfoToFragment(2));
+            row3.setText(Sp3Model.getInfoToFragment(3));
+            row4.setText(Sp3Model.getInfoToFragment(4));
+            row5.setText(Sp3Model.getInfoToFragment(5));
+            row6.setText(Sp3Model.getInfoToFragment(6));
+            row7.setText(Sp3Model.getInfoToFragment(7));
+            row8.setText(Sp3Model.getInfoToFragment(8));
+            row9.setText(Sp3Model.getInfoToFragment(9));
+        }
     }
 }

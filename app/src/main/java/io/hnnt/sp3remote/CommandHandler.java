@@ -6,9 +6,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.concurrent.Semaphore;
 
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.ControlEvent;

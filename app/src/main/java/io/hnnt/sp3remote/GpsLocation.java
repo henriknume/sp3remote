@@ -19,16 +19,17 @@ public class GpsLocation implements LocationListener {
     private Location location;
     private static final double POS_CONTROL_VALUE = 9001.;
 
-
     public GpsLocation(){ }
 
     public void getLocationManager(String provider, Context context, Location myLocation, LocationListener locationListener){
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
+
         provider = locationManager.getBestProvider(criteria,true);
         getLocation(provider, context, locationListener);
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        myLocation = locationManager.getLastKnownLocation(provider);
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            myLocation = locationManager.getLastKnownLocation(provider);
+        }
         location = myLocation;
     }
 
@@ -58,7 +59,7 @@ public class GpsLocation implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        location = getLastKnownLocation();
+
     }
 
     @Override

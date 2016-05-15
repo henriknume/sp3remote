@@ -2,12 +2,16 @@ package io.hnnt.sp3remote.events;
 
 import java.util.LinkedHashMap;
 
+import io.hnnt.sp3remote.Sp3Model;
+
 /**
  * Created by nume on 2016-05-06.
  */
 
 
 public class InfoEvent{
+
+    public static final String TAG = "InfoEvent.java";
 
     private String softwareRelease = "-0";
     private String currentPosition = "-1";
@@ -26,6 +30,8 @@ public class InfoEvent{
 
     public InfoEvent(String message){
         this.message = message;
+ //       Log.d(TAG,this.message);
+        Sp3Model.setInfoToMail(this.message);
         map = parseMessage(message);
         setFields(map);
     }
@@ -102,4 +108,5 @@ public class InfoEvent{
     public String getSunToday() {
         return sunToday;
     }
+
 }

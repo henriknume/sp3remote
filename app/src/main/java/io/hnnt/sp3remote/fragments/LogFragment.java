@@ -22,8 +22,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import io.hnnt.sp3remote.R;
+import io.hnnt.sp3remote.Sp3Model;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
+import io.hnnt.sp3remote.events.LogEvent;
+import io.hnnt.sp3remote.events.SettingsEvent;
 
 public class LogFragment extends Fragment{
 
@@ -33,6 +36,7 @@ public class LogFragment extends Fragment{
     private Button toggleLogButton, clearLogButton, sendLogButton;
 
     private TextView logTextView;
+
 
     public LogFragment() {
         // Required empty public constructor
@@ -75,6 +79,7 @@ public class LogFragment extends Fragment{
     public void onResume(){
         Log.d(TAG, "onResume()");
         fcontext = getContext();
+        EventBus.getDefault().post(new CommandEvent("date", CommandEvent.TARGET_INFO_FRAGMENT));
         super.onResume();
     }
 
@@ -85,9 +90,22 @@ public class LogFragment extends Fragment{
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLogEvent(LogEvent event){
+        Log.d(TAG, event.message);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInfoEvent(InfoEvent event){
         Log.d(TAG, "onMessageEvent(), message: " + event.message + "\n");
-        logTextView.append(event.message + "\n");
+        Sp3Model.setLog(event.message);
+        logTextView.append(Sp3Model.getLog() + "\n");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSettingsEvent(SettingsEvent event){
+        if(event.responseType == SettingsEvent.DATE_VALUE_GET)
+            Sp3Model.setDate(event.responseData);
+            Log.d(TAG, event.responseData);
     }
 
 
@@ -125,7 +143,15 @@ public class LogFragment extends Fragment{
 
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject_default));
         //the message
-        emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_text_default)+"\n\n"+logTextView.getText().toString());
+        emailIntent.putExtra(Intent.EXTRA_TEXT,
+                Sp3Model.getDate()
+                +  "\n"
+                + Sp3Model.getInfoToMail()
+                +"\n"
+                + getString(R.string.email_text_default)
+                +"\n"
+                + Sp3Model.getLog()
+        );
 
         try{
             startActivity(Intent.createChooser(emailIntent, getString(R.string.email_send_email)));

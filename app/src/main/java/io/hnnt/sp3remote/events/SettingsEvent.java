@@ -1,5 +1,7 @@
 package io.hnnt.sp3remote.events;
 
+import io.hnnt.sp3remote.Sp3Model;
+
 /**
  * Created by nume on 2016-05-11.
  */
@@ -71,6 +73,7 @@ public class SettingsEvent{
 
                 #
             */
+
             String[] rows = message.split("\n");
             for (String row : rows){
                 if(row.contains("-")){
@@ -91,6 +94,7 @@ public class SettingsEvent{
 
                 #
             */
+            Sp3Model.setDate(message);
             String[] rows = message.split("\n");
             for (String row : rows){
                 if(row.contains("Current date")){
