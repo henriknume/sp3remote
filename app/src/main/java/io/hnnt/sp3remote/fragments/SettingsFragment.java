@@ -45,7 +45,7 @@ public class SettingsFragment extends Fragment {
     private static final double POS_CONTROL_VALUE = 9001.;
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION = 9001;
     private static final int THREAD_SLEEP_TIMER_LONG = 3000;
-    private static final int POST_EVENT_SLEEP_TIME = 1000;
+    private static final int POST_EVENT_SLEEP_TIME = 1500;
 
     public static final String TAG = "SettingsFragment.java";
 

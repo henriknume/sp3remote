@@ -34,9 +34,7 @@ public class LogFragment extends Fragment{
 
     public  Context fcontext;
     private Button toggleLogButton, clearLogButton, sendLogButton;
-
     private TextView logTextView;
-
     private boolean loggaIsActive = false;
 
     public LogFragment() {
@@ -119,7 +117,6 @@ public class LogFragment extends Fragment{
             Sp3Model.setDate(event.responseData);
             Log.d(TAG, event.responseData);
     }
-
 
 
     private void createButtonListeners(){
