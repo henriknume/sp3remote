@@ -83,11 +83,11 @@ public class LogFragment extends Fragment{
 
     @Override
     public void onResume(){
+        super.onResume();
         Log.d(TAG, "onResume()");
         fcontext = getContext();
         EventBus.getDefault().post(new CommandEvent("date", CommandEvent.TARGET_SETTINGS_FRAGMENT));
-        //logTextView.setText(Sp3Model.getLog());
-        super.onResume();
+        updateLogListview(Sp3Model.getLogItemList());
     }
 
     @Override
@@ -115,12 +115,9 @@ public class LogFragment extends Fragment{
     }
 
     private void updateLogListview(ArrayList<LogItem> list){
-
         logItemList = list;
         lvLogAdapter.update(logItemList);
         lvLogAdapter.notifyDataSetChanged();
-
-
     }
 /*
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -144,13 +141,6 @@ public class LogFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "toggleLogButton pressed");
                 EventBus.getDefault().post(new CommandEvent("logga", CommandEvent.TARGET_LOG_FRAGMENT));
-            }
-        });
-
-        clearLogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "clearLogButton pressed");
             }
         });
 
