@@ -214,7 +214,6 @@ public class SettingsFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(fcontext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION);
         }
-        showRequestDialog();
     }
 
     @Override
