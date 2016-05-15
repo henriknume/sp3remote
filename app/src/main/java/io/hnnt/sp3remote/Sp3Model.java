@@ -1,5 +1,7 @@
 package io.hnnt.sp3remote;
 
+import io.hnnt.sp3remote.events.InfoEvent;
+
 /**
  * Created by Tobias Nielsen on 2016-05-13.
  */
@@ -22,6 +24,23 @@ public class Sp3Model {
         }else{
             return OUT_OF_RANGE;
         }
+    }
+
+    public static void setSP3Model(InfoEvent event){
+        setInfoToFragment(0, event.getSoftwareRelease());
+        setInfoToFragment(1, event.getCurrentPosition());
+        setInfoToFragment(2, event.getCalcSunPosition());
+        setInfoToFragment(3, event.getTiltZeroPosition());
+        setInfoToFragment(4, event.getSensorZeroPosition());
+        setInfoToFragment(5, event.getNrOfSunnyDays());
+        setInfoToFragment(6, event.getLastSunTime());
+        setInfoToFragment(7, event.getNrOfResets());
+        setInfoToFragment(8, event.getMorningPosDiff());
+        boolean sun = false;
+        if(event.getCalcSunPosition().equals("1")){
+            sun = true;
+        }
+        setInfoToFragment(9, ""+sun);
     }
 
 

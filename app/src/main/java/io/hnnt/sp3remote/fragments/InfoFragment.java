@@ -112,7 +112,7 @@ public class InfoFragment extends Fragment{
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInfoEvent(InfoEvent event){
-        fillSP3Model(event);
+        Sp3Model.setSP3Model(event);
         fillLayout();
     /*    row0.setText(event.getSoftwareRelease());
         row1.setText(event.getCurrentPosition());
@@ -128,23 +128,6 @@ public class InfoFragment extends Fragment{
             sun = true;
         }
         row9.setText("" + sun);*/
-    }
-
-    public void fillSP3Model(InfoEvent event){
-        Sp3Model.setInfoToFragment(0, event.getSoftwareRelease());
-        Sp3Model.setInfoToFragment(1, event.getCurrentPosition());
-        Sp3Model.setInfoToFragment(2, event.getCalcSunPosition());
-        Sp3Model.setInfoToFragment(3, event.getTiltZeroPosition());
-        Sp3Model.setInfoToFragment(4, event.getSensorZeroPosition());
-        Sp3Model.setInfoToFragment(5, event.getNrOfSunnyDays());
-        Sp3Model.setInfoToFragment(6, event.getLastSunTime());
-        Sp3Model.setInfoToFragment(7, event.getNrOfResets());
-        Sp3Model.setInfoToFragment(8, event.getMorningPosDiff());
-        boolean sun = false;
-        if(event.getCalcSunPosition().equals("1")){
-            sun = true;
-        }
-        Sp3Model.setInfoToFragment(9, ""+sun);
     }
 
     public void fillLayout(){

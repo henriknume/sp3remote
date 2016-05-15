@@ -80,7 +80,7 @@ public class LogFragment extends Fragment{
     public void onResume(){
         Log.d(TAG, "onResume()");
         fcontext = getContext();
-        EventBus.getDefault().post(new CommandEvent("date", CommandEvent.TARGET_INFO_FRAGMENT));
+        EventBus.getDefault().post(new CommandEvent("date", CommandEvent.TARGET_SETTINGS_FRAGMENT));
         super.onResume();
     }
 
@@ -92,15 +92,17 @@ public class LogFragment extends Fragment{
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLogEvent(LogEvent event){
+        Log.d(TAG,"onLogEvent():" + event.message);
         if(event.isLogLine){
             logTextView.append(event.message + "\n");
             loggaIsActive = true;
         }else{
+            /* response from toggle logga button goes here */
             if(loggaIsActive){
-                logTextView.append("\nlog stopped\n");
+                logTextView.append("\n>log stopped\n");
                 loggaIsActive = false;
             }else{
-                logTextView.append("\nlog started\n");
+                logTextView.append("\n>nlog started\n");
             }
         }
     }
@@ -108,8 +110,7 @@ public class LogFragment extends Fragment{
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInfoEvent(InfoEvent event){
         Log.d(TAG, "onMessageEvent(), message: " + event.message + "\n");
-        Sp3Model.setLog(event.message);
-        logTextView.append(Sp3Model.getLog() + "\n");
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -118,6 +119,7 @@ public class LogFragment extends Fragment{
             Sp3Model.setDate(event.responseData);
             Log.d(TAG, event.responseData);
     }
+
 
 
     private void createButtonListeners(){
@@ -155,8 +157,8 @@ public class LogFragment extends Fragment{
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject_default));
         //the message
         emailIntent.putExtra(Intent.EXTRA_TEXT,
-                Sp3Model.getDate()
-                +  "\n"
+                  Sp3Model.getDate()
+                +"\n\n"
                 + Sp3Model.getInfoToMail()
                 +"\n"
                 + getString(R.string.email_text_default)
