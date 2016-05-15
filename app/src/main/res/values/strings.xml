@@ -70,7 +70,7 @@
     <string name="email_intent">mailto</string>
     <string name="email_recepient_default">emailaddress@thishost.com</string>
     <string name="email_subject_default">SP3 Log Message From: XXX</string>
-    <string name="email_text_default">===SP3 REMOTE LOG===</string>
+    <string name="email_text_log">===SP3 REMOTE LOG===</string>
     <string name="email_send_email">Send email...</string>
 
 

@@ -69,30 +69,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        Log.d(TAG,"Create");
+        fcontext = getContext();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_settings, container, false);
-
-        syncButton        = (Button)   v.findViewById(R.id.sync_button);
-        timeTextView      = (TextView) v.findViewById(R.id.time_field_textview);
-        dateTextView      = (TextView) v.findViewById(R.id.date_field_textview);
-        latitudeTextView  = (TextView) v.findViewById(R.id.pos_lat_field_textview);
-        longitudeTextView = (TextView) v.findViewById(R.id.pos_lon_field_textview);
-
-        createButtonListeners();
-
-        return v;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart()");
-        EventBus.getDefault().register(this);
         gpsLocation = new GpsLocation();
         locationListener = new LocationListener() {
             @Override
@@ -115,6 +94,38 @@ public class SettingsFragment extends Fragment {
 
             }
         };
+        Log.d(TAG,"Getting location");
+        if(setPosButtonBoolean)
+            new asyncLocation().execute("");
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        syncButton        = (Button)   v.findViewById(R.id.sync_button);
+        timeTextView      = (TextView) v.findViewById(R.id.time_field_textview);
+        dateTextView      = (TextView) v.findViewById(R.id.date_field_textview);
+        latitudeTextView  = (TextView) v.findViewById(R.id.pos_lat_field_textview);
+        longitudeTextView = (TextView) v.findViewById(R.id.pos_lon_field_textview);
+
+
+
+        createButtonListeners();
+
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart()");
+
+        EventBus.getDefault().register(this);
+
     }
 
     @Override
@@ -125,12 +136,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onResume() {
         Log.d(TAG, "onResume()");
-        fcontext = getContext();
+
         super.onResume();
         getDateAndTime();
-
-        if(setPosButtonBoolean)
-        new asyncLocation().execute("");
 
         if (!(lat == POS_CONTROL_VALUE) || (lon == POS_CONTROL_VALUE)) {
                 latitudeTextView.setText("" + lat);
@@ -201,10 +209,12 @@ public class SettingsFragment extends Fragment {
     }
 
 
+
     protected void checkPermission() {
         if (ContextCompat.checkSelfPermission(fcontext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION);
         }
+        showRequestDialog();
     }
 
     @Override
@@ -215,15 +225,15 @@ public class SettingsFragment extends Fragment {
                 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             setPosButtonBoolean = true;
         } else {
-            if(setPosButtonBoolean)
             showRequestDialog();
         }
     }
+
 /*
-        Dialog explaining why ACESS.FINE.LOCATION is needed by our app
+        Dialog explaining why ACCESS.FINE.LOCATION is needed by our app
 */
     public void showRequestDialog() {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(this.getActivity())
                 .setTitle(getString(R.string.alertdialog_title))
                 .setMessage(getString((R.string.alertdialog_message)))
                 .setCancelable(true)
@@ -292,12 +302,14 @@ public class SettingsFragment extends Fragment {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                if(lat != POS_CONTROL_VALUE)
                 EventBus.getDefault().post(new CommandEvent("lat " + lat, CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 try {
                     Thread.sleep(POST_EVENT_SLEEP_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                if(lon != POS_CONTROL_VALUE)
                 EventBus.getDefault().post(new CommandEvent("lon " + lon, CommandEvent.TARGET_SETTINGS_FRAGMENT));
             }
             return null;
