@@ -32,9 +32,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.hnnt.sp3remote.events.InfoEvent;
+import io.hnnt.sp3remote.events.LogEvent;
 import io.hnnt.sp3remote.events.ResponseEvent;
 
 public class UsbService extends Service {
+
+    public static String TAG = "UsbService.java";
 
     public static final String ACTION_USB_READY = "com.felhr.connectivityservices.USB_READY";
     public static final String ACTION_USB_ATTACHED = "android.hardware.usb.action.USB_DEVICE_ATTACHED";
@@ -71,13 +74,31 @@ public class UsbService extends Service {
         public void onReceivedData(byte[] arg0) {
             try {
                 String data = new String(arg0, "UTF-8");
-                EventBus.getDefault().post(new ResponseEvent(data));
-
+                String trimmedData = data.replaceAll("(\\r)", "");
+                if(nrOccurancesOf(trimmedData, ',', 30)){      /* log messages always contain 30 commas*/
+                    EventBus.getDefault().post(new LogEvent(trimmedData, true));
+                }else{
+                    EventBus.getDefault().post(new ResponseEvent(trimmedData));
+                }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
     };
+
+    private boolean nrOccurancesOf(String str, char c, int n){
+        int count = 0;
+        char[] temp = str.toCharArray();
+        for(char t : temp){
+            if(t == c){
+                count++;
+            }
+        }
+        if(count == n){
+            return true;
+        }
+        return false;
+    }
 
     /*
      * Different notifications from OS will be received here (USB attached, detached, permission responses...)

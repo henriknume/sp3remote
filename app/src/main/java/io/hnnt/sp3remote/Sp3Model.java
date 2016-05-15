@@ -6,13 +6,9 @@ package io.hnnt.sp3remote;
 public class Sp3Model {
 
     public static final String OUT_OF_RANGE = "-1";
-
     public static String[] infoToFragment = new String[10];
-
     public static String infoToMail;
-
     public static String date;
-
     public static String log;
 
     public static void setInfoToFragment(int i, String input){

@@ -37,6 +37,7 @@ public class LogFragment extends Fragment{
 
     private TextView logTextView;
 
+    private boolean loggaIsActive = false;
 
     public LogFragment() {
         // Required empty public constructor
@@ -91,7 +92,17 @@ public class LogFragment extends Fragment{
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLogEvent(LogEvent event){
-        Log.d(TAG, event.message);
+        if(event.isLogLine){
+            logTextView.append(event.message + "\n");
+            loggaIsActive = true;
+        }else{
+            if(loggaIsActive){
+                logTextView.append("\nlog stopped\n");
+                loggaIsActive = false;
+            }else{
+                logTextView.append("\nlog started\n");
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
