@@ -40,10 +40,12 @@ public class Sp3Model {
         sb.append("-----------------------------------\n");
         sb.append("         last recorded log\n");
         sb.append("-----------------------------------\n");
-        for(LogItem li : logItemList){
-            sb.append(li.label + " : " + li.value + "\n");
+        if(logItemList != null) {
+            for (LogItem li : logItemList) {
+                sb.append(li.label + " : " + li.value + "\n");
+            }
         }
-        return sb.toString();
+            return sb.toString();
     }
 
     public static void setLogItemList(ArrayList<LogItem> logItemList) {

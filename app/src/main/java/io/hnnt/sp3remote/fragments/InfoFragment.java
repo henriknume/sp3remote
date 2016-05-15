@@ -20,9 +20,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import io.hnnt.sp3remote.R;
-import io.hnnt.sp3remote.model.Sp3Model;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
+import io.hnnt.sp3remote.model.Sp3Model;
 
 public class InfoFragment extends Fragment{
 
@@ -31,16 +31,16 @@ public class InfoFragment extends Fragment{
     Context fcontext;
     Button infoButton;
 
-    TextView row0;
-    TextView row1;
-    TextView row2;
-    TextView row3;
-    TextView row4;
-    TextView row5;
-    TextView row6;
-    TextView row7;
-    TextView row8;
-    TextView row9;
+    TextView softWareReleaseTextView;
+    TextView currentPositionTextView;
+    TextView calcSunPositionTextView;
+    TextView tiltZeroPositionTextView;
+    TextView sensorZeroPositionTextView;
+    TextView nrOfSunnyDaysTextView;
+    TextView lastSunTimeTextView;
+    TextView nrOfResetsTextView;
+    TextView morningPosDiffTextView;
+    TextView sunTodayTextView;
 
     public InfoFragment() {
         // Required empty public constructor
@@ -68,16 +68,16 @@ public class InfoFragment extends Fragment{
             }
         });
 
-        row0 = (TextView) currentLayout.findViewById(R.id.info_field_0_textview);
-        row1 = (TextView) currentLayout.findViewById(R.id.info_field_1_textview);
-        row2 = (TextView) currentLayout.findViewById(R.id.info_field_2_textview);
-        row3 = (TextView) currentLayout.findViewById(R.id.info_field_3_textview);
-        row4 = (TextView) currentLayout.findViewById(R.id.info_field_4_textview);
-        row5 = (TextView) currentLayout.findViewById(R.id.info_field_5_textview);
-        row6 = (TextView) currentLayout.findViewById(R.id.info_field_6_textview);
-        row7 = (TextView) currentLayout.findViewById(R.id.info_field_7_textview);
-        row8 = (TextView) currentLayout.findViewById(R.id.info_field_8_textview);
-        row9 = (TextView) currentLayout.findViewById(R.id.info_field_9_textview);
+        softWareReleaseTextView = (TextView) currentLayout.findViewById(R.id.info_field_0_textview);
+        currentPositionTextView = (TextView) currentLayout.findViewById(R.id.info_field_1_textview);
+        calcSunPositionTextView = (TextView) currentLayout.findViewById(R.id.info_field_2_textview);
+        tiltZeroPositionTextView = (TextView) currentLayout.findViewById(R.id.info_field_3_textview);
+        sensorZeroPositionTextView = (TextView) currentLayout.findViewById(R.id.info_field_4_textview);
+        nrOfSunnyDaysTextView = (TextView) currentLayout.findViewById(R.id.info_field_5_textview);
+        lastSunTimeTextView = (TextView) currentLayout.findViewById(R.id.info_field_6_textview);
+        nrOfResetsTextView = (TextView) currentLayout.findViewById(R.id.info_field_7_textview);
+        morningPosDiffTextView = (TextView) currentLayout.findViewById(R.id.info_field_8_textview);
+        sunTodayTextView = (TextView) currentLayout.findViewById(R.id.info_field_9_textview);
         return currentLayout;
     }
 
@@ -114,34 +114,34 @@ public class InfoFragment extends Fragment{
     public void onInfoEvent(InfoEvent event){
         Sp3Model.setInfoSp3Model(event);
 
-        row0.setText(event.getSoftwareRelease());
-        row1.setText(event.getCurrentPosition());
-        row2.setText(event.getCalcSunPosition());
-        row3.setText(event.getTiltZeroPosition());
-        row4.setText(event.getSensorZeroPosition());
-        row5.setText(event.getNrOfSunnyDays());
-        row6.setText(event.getLastSunTime());
-        row7.setText(event.getNrOfResets());
-        row8.setText(event.getMorningPosDiff());
+        softWareReleaseTextView.setText(event.getSoftwareRelease());
+        currentPositionTextView.setText(event.getCurrentPosition());
+        calcSunPositionTextView.setText(event.getCalcSunPosition());
+        tiltZeroPositionTextView.setText(event.getTiltZeroPosition());
+        sensorZeroPositionTextView.setText(event.getSensorZeroPosition());
+        nrOfSunnyDaysTextView.setText(event.getNrOfSunnyDays());
+        lastSunTimeTextView.setText(event.getLastSunTime());
+        nrOfResetsTextView.setText(event.getNrOfResets());
+        morningPosDiffTextView.setText(event.getMorningPosDiff());
         boolean sun = false;
         if(event.getSunToday().equals("1")){
             sun = true;
         }
-        row9.setText("" + sun);
+        sunTodayTextView.setText("" + sun);
     }
 
     public void getInfoSp3Model(){
         if(Sp3Model.getSoftwareRelease() != null){
-            row0.setText(Sp3Model.getSoftwareRelease());
-            row1.setText(Sp3Model.getCurrentPosition());
-            row2.setText(Sp3Model.getCalcSunPosition());
-            row3.setText(Sp3Model.getTiltZeroPosition());
-            row4.setText(Sp3Model.getSensorZeroPosition());
-            row5.setText(Sp3Model.getNrOfSunnyDays());
-            row6.setText(Sp3Model.getLastSunTime());
-            row7.setText(Sp3Model.getNrOfResets());
-            row8.setText(Sp3Model.getMorningPosDiff());
-            row9.setText(Sp3Model.getSunToday());
+            softWareReleaseTextView.setText(Sp3Model.getSoftwareRelease());
+            currentPositionTextView.setText(Sp3Model.getCurrentPosition());
+            calcSunPositionTextView.setText(Sp3Model.getCalcSunPosition());
+            tiltZeroPositionTextView.setText(Sp3Model.getTiltZeroPosition());
+            sensorZeroPositionTextView.setText(Sp3Model.getSensorZeroPosition());
+            nrOfSunnyDaysTextView.setText(Sp3Model.getNrOfSunnyDays());
+            lastSunTimeTextView.setText(Sp3Model.getLastSunTime());
+            nrOfResetsTextView.setText(Sp3Model.getNrOfResets());
+            morningPosDiffTextView.setText(Sp3Model.getMorningPosDiff());
+            sunTodayTextView.setText(Sp3Model.getSunToday());
         }
     }
 }

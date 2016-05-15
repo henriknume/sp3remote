@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -25,13 +24,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 
 import io.hnnt.sp3remote.R;
+import io.hnnt.sp3remote.events.CommandEvent;
+import io.hnnt.sp3remote.events.LogEvent;
 import io.hnnt.sp3remote.model.ListviewLogAdapter;
 import io.hnnt.sp3remote.model.LogItem;
 import io.hnnt.sp3remote.model.Sp3Model;
-import io.hnnt.sp3remote.events.CommandEvent;
-import io.hnnt.sp3remote.events.InfoEvent;
-import io.hnnt.sp3remote.events.LogEvent;
-import io.hnnt.sp3remote.events.SettingsEvent;
 
 public class LogFragment extends Fragment{
 
@@ -105,6 +102,7 @@ public class LogFragment extends Fragment{
         if(event.isLogLine){
             loggaIsActive = true;
             updateLogListview(event.getLogList());
+            Sp3Model.setLogItemList(event.getLogList());
         }else{
             /* response from toggle logga button goes here */
             if(loggaIsActive){
@@ -177,7 +175,7 @@ public class LogFragment extends Fragment{
                 +"\n\n"
                 + Sp3Model.getInfoToMail()
                 +"\n"
-                + getString(R.string.email_text_default)
+                + getString(R.string.email_text_log)
                 +"\n"
                 + Sp3Model.getLogEmailFormatted()
         );
