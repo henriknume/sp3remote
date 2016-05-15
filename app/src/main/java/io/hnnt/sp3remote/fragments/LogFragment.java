@@ -59,7 +59,6 @@ public class LogFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_log, container, false);
 
         toggleLogButton = (Button)   rootView.findViewById(R.id.toggle_log_button);
-        clearLogButton  = (Button)   rootView.findViewById(R.id.clear_log_button);
         sendLogButton   = (Button)   rootView.findViewById(R.id.send_log_button);
 
         ArrayList<LogItem> logItemList = Sp3Model.getLogItemList();
