@@ -31,7 +31,8 @@ public class InfoEvent{
     public InfoEvent(String message){
         this.message = message;
  //       Log.d(TAG,this.message);
-        Sp3Model.setInfoToMail(this.message);
+        Sp3Model.setInfoToMail(message);
+//        Sp3Model.setLog(this.message);
         map = parseMessage(message);
         setFields(map);
     }
