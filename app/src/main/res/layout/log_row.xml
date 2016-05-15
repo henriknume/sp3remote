@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:text="First line"
-        android:textSize="15sp"
+        android:typeface="monospace"
+        android:textSize="12sp"
     />
 
     <!-- Align to right of the dummy -->
@@ -25,10 +26,12 @@
         android:id="@+id/secondLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/dummy"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:textColor="@color/colorBlack"
+        android:typeface="monospace"
         android:text="Second Line"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/dummy"
+        android:layout_marginStart="42dp" />
 
 </RelativeLayout>
