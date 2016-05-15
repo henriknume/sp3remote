@@ -36,8 +36,6 @@ import java.util.TimeZone;
 import io.hnnt.sp3remote.GpsLocation;
 import io.hnnt.sp3remote.R;
 import io.hnnt.sp3remote.events.CommandEvent;
-import io.hnnt.sp3remote.events.ControlEvent;
-import io.hnnt.sp3remote.events.InfoEvent;
 import io.hnnt.sp3remote.events.SettingsEvent;
 
 public class SettingsFragment extends Fragment {
@@ -155,7 +153,7 @@ public class SettingsFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSettingsEvent(SettingsEvent event) {
 
-        switch (event.responseType) {
+/*        switch (event.responseType) {
             case SettingsEvent.DATE_VALUE_SET:
                 Toast.makeText(fcontext, "Time: " + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
@@ -177,7 +175,7 @@ public class SettingsFragment extends Fragment {
             default:
                 Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
                 break;
-        }
+        }*/
     }
 
     private void createButtonListeners() {
