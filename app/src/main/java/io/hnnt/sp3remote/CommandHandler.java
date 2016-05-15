@@ -120,7 +120,7 @@ public class CommandHandler {
                         EventBus.getDefault().post(new ControlEvent(response));
                         break;
                     case CommandEvent.TARGET_LOG_FRAGMENT:
-                        EventBus.getDefault().post(new LogEvent(response));
+                        EventBus.getDefault().post(new LogEvent(response, false));
                         break;
                     default: throw new IllegalArgumentException("invalid response target");
                 }
