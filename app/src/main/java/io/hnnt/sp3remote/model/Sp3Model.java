@@ -1,5 +1,7 @@
 package io.hnnt.sp3remote.model;
 
+import java.util.ArrayList;
+
 import io.hnnt.sp3remote.events.InfoEvent;
 
 /**
@@ -20,9 +22,33 @@ public class Sp3Model {
 
     private static String infoToMail;
     private static String date;
-    private static StringBuilder log = new StringBuilder("");
 
+    private static ArrayList<LogItem> logItemList;
 
+    public static ArrayList<LogItem> getLogItemList() {
+        if(logItemList == null){
+            ArrayList<LogItem> emptyList = new ArrayList<>();
+            emptyList.add(new LogItem("No logs","Turn on logging for updated log information"));
+            return emptyList;
+        }else {
+            return logItemList;
+        }
+    }
+
+    public static String getLogEmailFormatted(){
+        StringBuilder sb = new StringBuilder("");
+        sb.append("-----------------------------------\n");
+        sb.append("         last recorded log\n");
+        sb.append("-----------------------------------\n");
+        for(LogItem li : logItemList){
+            sb.append(li.label + " : " + li.value + "\n");
+        }
+        return sb.toString();
+    }
+
+    public static void setLogItemList(ArrayList<LogItem> logItemList) {
+        Sp3Model.logItemList = logItemList;
+    }
 
     public static String getSoftwareRelease() {
         return softwareRelease;
@@ -137,16 +163,5 @@ public class Sp3Model {
         return date;
     }
 
-    public static void setLog(String input){
-        log.append(input+"\n");
-    }
-
-    public static String getLog(){
-        return log.toString();
-    }
-
-    public static void clearLog(){
-        log = new StringBuilder("");
-    }
 
 }

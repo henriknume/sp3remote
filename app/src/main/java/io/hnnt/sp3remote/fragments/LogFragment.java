@@ -65,31 +65,12 @@ public class LogFragment extends Fragment{
         clearLogButton  = (Button)   rootView.findViewById(R.id.clear_log_button);
         sendLogButton   = (Button)   rootView.findViewById(R.id.send_log_button);
 
-        ArrayList<LogItem> logItemList = getLogItemList();
+        ArrayList<LogItem> logItemList = Sp3Model.getLogItemList();
         ListView listView = (ListView)rootView.findViewById(R.id.log_items_listview);
         lvLogAdapter = new ListviewLogAdapter(getActivity(), logItemList);
         listView.setAdapter(lvLogAdapter);
         createButtonListeners();
         return rootView;
-    }
-
-    private ArrayList<LogItem> getLogItemList(){
-        /*
-        * TODO get the last logitemlist from model
-        * */
-        ArrayList<LogItem> list = new ArrayList<>();
-        list.add(new LogItem("111", "aaaa"));
-        list.add(new LogItem("bbbbb", "2222"));
-        list.add(new LogItem("ccccc", "33333"));
-        list.add(new LogItem("ddddd", "4444"));
-        list.add(new LogItem("eeeee", "5555"));
-        list.add(new LogItem("111", "aaaa"));
-        list.add(new LogItem("bbbbb", "2222"));
-        list.add(new LogItem("ccccc", "33333"));
-        list.add(new LogItem("ddddd", "4444"));
-        list.add(new LogItem("eeeee", "5555"));
-        list.add(new LogItem("111", "aaaa"));
-        return list;
     }
 
     @Override
@@ -199,7 +180,7 @@ public class LogFragment extends Fragment{
                 +"\n"
                 + getString(R.string.email_text_default)
                 +"\n"
-                + Sp3Model.getLog()
+                + Sp3Model.getLogEmailFormatted()
         );
 
         try{
