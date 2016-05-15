@@ -99,7 +99,7 @@ public class InfoFragment extends Fragment{
     public void onResume() {
         Log.d(TAG, "onResume()");
         fcontext = getContext();
-        fillLayout();
+        getInfoSp3Model();
         super.onResume();
     }
 
@@ -112,9 +112,9 @@ public class InfoFragment extends Fragment{
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInfoEvent(InfoEvent event){
-        Sp3Model.setSP3Model(event);
-        fillLayout();
-    /*    row0.setText(event.getSoftwareRelease());
+        Sp3Model.setInfoSp3Model(event);
+
+        row0.setText(event.getSoftwareRelease());
         row1.setText(event.getCurrentPosition());
         row2.setText(event.getCalcSunPosition());
         row3.setText(event.getTiltZeroPosition());
@@ -127,21 +127,21 @@ public class InfoFragment extends Fragment{
         if(event.getSunToday().equals("1")){
             sun = true;
         }
-        row9.setText("" + sun);*/
+        row9.setText("" + sun);
     }
 
-    public void fillLayout(){
-        if(Sp3Model.getInfoToFragment(0) != null) {
-            row0.setText(Sp3Model.getInfoToFragment(0));
-            row1.setText(Sp3Model.getInfoToFragment(1));
-            row2.setText(Sp3Model.getInfoToFragment(2));
-            row3.setText(Sp3Model.getInfoToFragment(3));
-            row4.setText(Sp3Model.getInfoToFragment(4));
-            row5.setText(Sp3Model.getInfoToFragment(5));
-            row6.setText(Sp3Model.getInfoToFragment(6));
-            row7.setText(Sp3Model.getInfoToFragment(7));
-            row8.setText(Sp3Model.getInfoToFragment(8));
-            row9.setText(Sp3Model.getInfoToFragment(9));
+    public void getInfoSp3Model(){
+        if(Sp3Model.getSoftwareRelease() != null){
+            row0.setText(Sp3Model.getSoftwareRelease());
+            row1.setText(Sp3Model.getCurrentPosition());
+            row2.setText(Sp3Model.getCalcSunPosition());
+            row3.setText(Sp3Model.getTiltZeroPosition());
+            row4.setText(Sp3Model.getSensorZeroPosition());
+            row5.setText(Sp3Model.getNrOfSunnyDays());
+            row6.setText(Sp3Model.getLastSunTime());
+            row7.setText(Sp3Model.getNrOfResets());
+            row8.setText(Sp3Model.getMorningPosDiff());
+            row9.setText(Sp3Model.getSunToday());
         }
     }
 }

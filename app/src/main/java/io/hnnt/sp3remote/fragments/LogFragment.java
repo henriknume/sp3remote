@@ -81,6 +81,7 @@ public class LogFragment extends Fragment{
         Log.d(TAG, "onResume()");
         fcontext = getContext();
         EventBus.getDefault().post(new CommandEvent("date", CommandEvent.TARGET_SETTINGS_FRAGMENT));
+        logTextView.setText(Sp3Model.getLog());
         super.onResume();
     }
 
@@ -95,6 +96,7 @@ public class LogFragment extends Fragment{
         Log.d(TAG,"onLogEvent():" + event.message);
         if(event.isLogLine){
             logTextView.append(event.message + "\n");
+            Sp3Model.setLog(logTextView.getText().toString());
             loggaIsActive = true;
         }else{
             /* response from toggle logga button goes here */
@@ -137,6 +139,7 @@ public class LogFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "clearLogButton pressed");
                 logTextView.setText(getString(R.string.logtextview_default_text));
+                Sp3Model.clearLog();
             }
         });
 
