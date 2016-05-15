@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import io.hnnt.sp3remote.R;
-import io.hnnt.sp3remote.Sp3Model;
+import io.hnnt.sp3remote.model.Sp3Model;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
 

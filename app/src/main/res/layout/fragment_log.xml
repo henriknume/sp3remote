@@ -14,18 +14,11 @@
         android:layout_weight="10"
         android:layout_margin="10dp">
 
-        <ScrollView
+        <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/log_items_listview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/scrollView" >
-
-            <TextView
-                android:id="@+id/log_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                />
-        </ScrollView>
+            android:layout_gravity="left|top" />
 
     </FrameLayout>
 

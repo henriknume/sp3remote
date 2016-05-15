@@ -1,4 +1,4 @@
-package io.hnnt.sp3remote;
+package io.hnnt.sp3remote.model;
 
 import io.hnnt.sp3remote.events.InfoEvent;
 

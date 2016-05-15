@@ -15,14 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import io.hnnt.sp3remote.R;
-import io.hnnt.sp3remote.Sp3Model;
+import io.hnnt.sp3remote.model.ListviewLogAdapter;
+import io.hnnt.sp3remote.model.LogItem;
+import io.hnnt.sp3remote.model.Sp3Model;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.InfoEvent;
 import io.hnnt.sp3remote.events.LogEvent;
@@ -34,8 +39,11 @@ public class LogFragment extends Fragment{
 
     public  Context fcontext;
     private Button toggleLogButton, clearLogButton, sendLogButton;
-    private TextView logTextView;
     private boolean loggaIsActive = false;
+
+    private ListView listView;
+    private ListviewLogAdapter lvLogAdapter;
+    private  ArrayList<LogItem> logItemList;
 
     public LogFragment() {
         // Required empty public constructor
@@ -51,15 +59,37 @@ public class LogFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_log, container, false);
-        logTextView     = (TextView) v.findViewById(R.id.log_textview);
+        View rootView = inflater.inflate(R.layout.fragment_log, container, false);
 
-        toggleLogButton = (Button)   v.findViewById(R.id.toggle_log_button);
-        clearLogButton  = (Button)   v.findViewById(R.id.clear_log_button);
-        sendLogButton   = (Button)   v.findViewById(R.id.send_log_button);
+        toggleLogButton = (Button)   rootView.findViewById(R.id.toggle_log_button);
+        clearLogButton  = (Button)   rootView.findViewById(R.id.clear_log_button);
+        sendLogButton   = (Button)   rootView.findViewById(R.id.send_log_button);
 
+        ArrayList<LogItem> logItemList = getLogItemList();
+        ListView listView = (ListView)rootView.findViewById(R.id.log_items_listview);
+        lvLogAdapter = new ListviewLogAdapter(getActivity(), logItemList);
+        listView.setAdapter(lvLogAdapter);
         createButtonListeners();
-        return v;
+        return rootView;
+    }
+
+    private ArrayList<LogItem> getLogItemList(){
+        /*
+        * TODO get the last logitemlist from model
+        * */
+        ArrayList<LogItem> list = new ArrayList<>();
+        list.add(new LogItem("111", "aaaa"));
+        list.add(new LogItem("bbbbb", "2222"));
+        list.add(new LogItem("ccccc", "33333"));
+        list.add(new LogItem("ddddd", "4444"));
+        list.add(new LogItem("eeeee", "5555"));
+        list.add(new LogItem("111", "aaaa"));
+        list.add(new LogItem("bbbbb", "2222"));
+        list.add(new LogItem("ccccc", "33333"));
+        list.add(new LogItem("ddddd", "4444"));
+        list.add(new LogItem("eeeee", "5555"));
+        list.add(new LogItem("111", "aaaa"));
+        return list;
     }
 
     @Override
@@ -92,19 +122,28 @@ public class LogFragment extends Fragment{
     public void onLogEvent(LogEvent event){
         Log.d(TAG,"onLogEvent():" + event.message);
         if(event.isLogLine){
-            logTextView.append(event.message + "\n");
             loggaIsActive = true;
+            updateLogListview(event.getLogList());
         }else{
             /* response from toggle logga button goes here */
             if(loggaIsActive){
-                logTextView.append("\n>log stopped\n");
+                //logTextView.append("\n>log stopped\n");
                 loggaIsActive = false;
             }else{
-                logTextView.append("\n>nlog started\n");
+                //logTextView.append("\n>nlog started\n");
             }
         }
     }
 
+    private void updateLogListview(ArrayList<LogItem> list){
+
+        logItemList = list;
+        lvLogAdapter.update(logItemList);
+        lvLogAdapter.notifyDataSetChanged();
+
+
+    }
+/*
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInfoEvent(InfoEvent event){
         Log.d(TAG, "onMessageEvent(), message: " + event.message + "\n");
@@ -118,7 +157,7 @@ public class LogFragment extends Fragment{
             Log.d(TAG, event.responseData);
     }
 
-
+*/
     private void createButtonListeners(){
 
         toggleLogButton.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +172,7 @@ public class LogFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "clearLogButton pressed");
-                logTextView.setText(getString(R.string.logtextview_default_text));
+                //logTextView.setText(getString(R.string.logtextview_default_text));
             }
         });
 

@@ -2,7 +2,7 @@ package io.hnnt.sp3remote.events;
 
 import java.util.LinkedHashMap;
 
-import io.hnnt.sp3remote.Sp3Model;
+import io.hnnt.sp3remote.model.Sp3Model;
 
 /**
  * Created by nume on 2016-05-06.
