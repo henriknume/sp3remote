@@ -201,7 +201,9 @@ public class SettingsFragment extends Fragment {
                 getDateAndTime();
 
                 EventBus.getDefault()
-                        .post(new CommandEvent("date " + dateTextView.getText().toString() + " " + timeTextView.getText().toString(), CommandEvent.TARGET_SETTINGS_FRAGMENT));
+                        .post(new CommandEvent("date " + dateTextView.getText().toString() + " " + timeTextView.getText().toString(),
+                                CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                                CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 //Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
 
             }
@@ -302,14 +304,18 @@ public class SettingsFragment extends Fragment {
                     e.printStackTrace();
                 }
                 if(lat != POS_CONTROL_VALUE)
-                EventBus.getDefault().post(new CommandEvent("lat " + lat, CommandEvent.TARGET_SETTINGS_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("lat " + lat,
+                        CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                        CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 try {
                     Thread.sleep(POST_EVENT_SLEEP_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 if(lon != POS_CONTROL_VALUE)
-                EventBus.getDefault().post(new CommandEvent("lon " + lon, CommandEvent.TARGET_SETTINGS_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("lon " + lon,
+                        CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                        CommandEvent.TARGET_SETTINGS_FRAGMENT));
             }
             return null;
         }

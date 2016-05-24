@@ -86,7 +86,7 @@ public class LogFragment extends Fragment{
         super.onResume();
         Log.d(TAG, "onResume()");
         fcontext = getContext();
-        EventBus.getDefault().post(new CommandEvent("date", CommandEvent.TARGET_SETTINGS_FRAGMENT));
+        EventBus.getDefault().post(new CommandEvent("date", CommandEvent.RESPONSE_TYPE_SETTINGSEVENT, CommandEvent.TARGET_SETTINGS_FRAGMENT));
         updateLogListview(Sp3Model.getLogItemList());
     }
 
@@ -140,7 +140,7 @@ public class LogFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "toggleLogButton pressed");
-                EventBus.getDefault().post(new CommandEvent("logga", CommandEvent.TARGET_LOG_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("logga", CommandEvent.RESPONSE_TYPE_LOGEVENT, CommandEvent.TARGET_LOG_FRAGMENT));
             }
         });
 

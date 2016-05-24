@@ -14,12 +14,20 @@ public class CommandEvent {
     public static final String TARGET_SETTINGS_FRAGMENT = "target_settings_fragment";
     public static final String TARGET_CONTROL_FRAGMENT = "target_control_fragment";
     public static final String TARGET_LOG_FRAGMENT = "target_log_fragment";
+    public static final String TARGET_ALL_FRAGMENTS = "target_all_fragments";
+
+    public static final String RESPONSE_TYPE_LOGEVENT = "response_type_logevent";
+    public static final String RESPONSE_TYPE_INFOEVENT = "response_type_infoevent";
+    public static final String RESPONSE_TYPE_SETTINGSEVENT = "response_type_settingsevent";
+    public static final String RESPONSE_TYPE_CONTROLEVENT = "response_type_controlevent";
 
     public final String command;
+    public final String responseType;
     public final String responseTarget;
 
-    public CommandEvent(String command, String responseTarget){
+    public CommandEvent(String command, String responseType, String responseTarget){
         this.command = command + "\r";
+        this.responseType = responseType;
         this.responseTarget = responseTarget;
     }
 

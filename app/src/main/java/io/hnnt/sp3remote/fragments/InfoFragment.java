@@ -64,7 +64,7 @@ public class InfoFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "infobutton pressed");
-                EventBus.getDefault().post(new CommandEvent("info", CommandEvent.TARGET_INFO_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("info", CommandEvent.RESPONSE_TYPE_INFOEVENT, CommandEvent.TARGET_INFO_FRAGMENT));
             }
         });
 

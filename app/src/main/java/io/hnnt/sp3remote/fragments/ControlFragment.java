@@ -117,7 +117,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "upButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run u", CommandEvent.TARGET_CONTROL_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("run u", CommandEvent.RESPONSE_TYPE_CONTROLEVENT, CommandEvent.TARGET_CONTROL_FRAGMENT));
             }
         });
 
@@ -125,7 +125,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "leftButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run l", CommandEvent.TARGET_CONTROL_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("run l", CommandEvent.RESPONSE_TYPE_CONTROLEVENT, CommandEvent.TARGET_CONTROL_FRAGMENT));
             }
         });
 
@@ -133,7 +133,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "rightButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run r", CommandEvent.TARGET_CONTROL_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("run r", CommandEvent.RESPONSE_TYPE_CONTROLEVENT, CommandEvent.TARGET_CONTROL_FRAGMENT));
             }
         });
 
@@ -141,7 +141,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "downButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run d", CommandEvent.TARGET_CONTROL_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("run d", CommandEvent.RESPONSE_TYPE_CONTROLEVENT, CommandEvent.TARGET_CONTROL_FRAGMENT));
             }
         });
 
@@ -149,7 +149,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "stopButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run stop", CommandEvent.TARGET_CONTROL_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("run stop", CommandEvent.RESPONSE_TYPE_CONTROLEVENT, CommandEvent.TARGET_CONTROL_FRAGMENT));
             }
         });
 
@@ -157,7 +157,7 @@ public class ControlFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "runAutoButton pressed");
-                EventBus.getDefault().post(new CommandEvent("run auto", CommandEvent.TARGET_CONTROL_FRAGMENT));
+                EventBus.getDefault().post(new CommandEvent("run auto", CommandEvent.RESPONSE_TYPE_CONTROLEVENT, CommandEvent.TARGET_CONTROL_FRAGMENT));
             }
         });
     }
