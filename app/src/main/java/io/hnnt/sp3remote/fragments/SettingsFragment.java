@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,7 @@ public class SettingsFragment extends Fragment {
 
     private TextView timeTextView, dateTextView, latitudeTextView, longitudeTextView;
     private Button syncButton;
+    private ProgressBar syncProgressBar;
 
 
     public SettingsFragment() {
@@ -111,8 +113,7 @@ public class SettingsFragment extends Fragment {
         dateTextView      = (TextView) v.findViewById(R.id.date_field_textview);
         latitudeTextView  = (TextView) v.findViewById(R.id.pos_lat_field_textview);
         longitudeTextView = (TextView) v.findViewById(R.id.pos_lon_field_textview);
-
-
+        syncProgressBar   = (ProgressBar) v.findViewById(R.id.sync_progressbar);
 
         createButtonListeners();
 
@@ -161,29 +162,35 @@ public class SettingsFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSettingsEvent(SettingsEvent event) {
 
-/*        switch (event.responseType) {
+        switch (event.responseType) {
             case SettingsEvent.DATE_VALUE_SET:
-                Toast.makeText(fcontext, "Time: " + event.responseData, Toast.LENGTH_SHORT).show();
+                syncProgressBar.setProgress(33);
+                //Toast.makeText(fcontext, "Time: " + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.DATE_VALUE_GET:
-                Toast.makeText(fcontext, "B." + event.responseData, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(fcontext, "B." + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LAT_VALUE_SET:
-                Toast.makeText(fcontext, "Lat:" + event.responseData, Toast.LENGTH_SHORT).show();
+                syncProgressBar.setProgress(66);
+                //Toast.makeText(fcontext, "Lat:" + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LON_VALUE_SET:
-                Toast.makeText(fcontext, "Lon:" + event.responseData, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(fcontext, "Lon:" + event.responseData, Toast.LENGTH_SHORT).show();
+                syncProgressBar.setProgress(100);
                 break;
             case SettingsEvent.LAT_VALUE_GET:
-                Toast.makeText(fcontext, "E." + event.responseData, Toast.LENGTH_SHORT).show();
+                /* TODO replace this with a proper sync finished event*/
+                //Toast.makeText(fcontext, "E." + event.responseData, Toast.LENGTH_SHORT).show();
+                Toast.makeText(fcontext, "Sync finished", Toast.LENGTH_SHORT).show();
+                syncProgressBar.setProgress(0);
                 break;
             case SettingsEvent.LON_VALUE_GET:
-                Toast.makeText(fcontext, "F." + event.responseData, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(fcontext, "F." + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             default:
-                Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
                 break;
-        }*/
+        }
     }
 
     private void createButtonListeners() {
@@ -192,6 +199,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "syncButton pressed");
+                syncProgressBar.setProgress(10);
                 syncLocation = true;
 
                 Toast.makeText(fcontext, getString(R.string.toast_syncing_device_start), Toast.LENGTH_SHORT).show();
@@ -205,7 +213,6 @@ public class SettingsFragment extends Fragment {
                                 CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
                                 CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 //Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -298,24 +305,18 @@ public class SettingsFragment extends Fragment {
             }
 
             if (syncLocation) {
-                try {
-                    Thread.sleep(POST_EVENT_SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
+                if(lat != POS_CONTROL_VALUE){
+                    EventBus.getDefault().post(new CommandEvent("lat " + lat,
+                            CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                            CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 }
-                if(lat != POS_CONTROL_VALUE)
-                EventBus.getDefault().post(new CommandEvent("lat " + lat,
-                        CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
-                        CommandEvent.TARGET_SETTINGS_FRAGMENT));
-                try {
-                    Thread.sleep(POST_EVENT_SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
+                if(lon != POS_CONTROL_VALUE){
+                    EventBus.getDefault().post(new CommandEvent("lon " + lon,
+                            CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                            CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 }
-                if(lon != POS_CONTROL_VALUE)
-                EventBus.getDefault().post(new CommandEvent("lon " + lon,
-                        CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
-                        CommandEvent.TARGET_SETTINGS_FRAGMENT));
             }
             return null;
         }
