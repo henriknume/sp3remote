@@ -35,7 +35,7 @@ public class LogFragment extends Fragment{
     public static final String TAG = "LogFragment.java";
 
     public  Context fcontext;
-    private Button toggleLogButton, clearLogButton, sendLogButton;
+    private Button toggleLogButton, sendLogButton;
     private boolean loggaIsActive = false;
 
     private ListView listView;

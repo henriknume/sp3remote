@@ -74,6 +74,22 @@ public class SettingsFragment extends Fragment {
         Log.d(TAG,"Create");
         fcontext = getContext();
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        syncButton        = (Button)   v.findViewById(R.id.sync_button);
+        timeTextView      = (TextView) v.findViewById(R.id.time_field_textview);
+        dateTextView      = (TextView) v.findViewById(R.id.date_field_textview);
+        latitudeTextView  = (TextView) v.findViewById(R.id.pos_lat_field_textview);
+        longitudeTextView = (TextView) v.findViewById(R.id.pos_lon_field_textview);
+        syncProgressBar   = (ProgressBar) v.findViewById(R.id.sync_progressbar);
+
+        createButtonListeners();
         gpsLocation = new GpsLocation();
         locationListener = new LocationListener() {
             @Override
@@ -99,23 +115,6 @@ public class SettingsFragment extends Fragment {
         Log.d(TAG,"Getting location");
         if(setPosButtonBoolean)
             new asyncLocation().execute("");
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_settings, container, false);
-
-        syncButton        = (Button)   v.findViewById(R.id.sync_button);
-        timeTextView      = (TextView) v.findViewById(R.id.time_field_textview);
-        dateTextView      = (TextView) v.findViewById(R.id.date_field_textview);
-        latitudeTextView  = (TextView) v.findViewById(R.id.pos_lat_field_textview);
-        longitudeTextView = (TextView) v.findViewById(R.id.pos_lon_field_textview);
-        syncProgressBar   = (ProgressBar) v.findViewById(R.id.sync_progressbar);
-
-        createButtonListeners();
 
         return v;
     }
@@ -151,6 +150,10 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
+        if(gpsLocation != null){
+            gpsLocation.stopListener(fcontext);
+            gpsLocation = null;
+        }
         super.onStop();
     }
 

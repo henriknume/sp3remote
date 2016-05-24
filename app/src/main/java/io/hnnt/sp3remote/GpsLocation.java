@@ -15,41 +15,46 @@ import android.support.v4.content.ContextCompat;
  */
 public class GpsLocation implements LocationListener {
 
-    private  LocationManager locationManager;
+    private LocationManager locationManager;
     private Location location;
     private static final double POS_CONTROL_VALUE = 9001.;
 
-    public GpsLocation(){ }
+    public GpsLocation() {
+    }
 
-    public void getLocationManager(String provider, Context context, Location myLocation, LocationListener locationListener){
+    public void getLocationManager(String provider, Context context, Location myLocation, LocationListener locationListener) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
 
-        provider = locationManager.getBestProvider(criteria,true);
+        provider = locationManager.getBestProvider(criteria, true);
         getLocation(provider, context, locationListener);
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             myLocation = locationManager.getLastKnownLocation(provider);
         }
         location = myLocation;
     }
 
-    protected void getLocation(String provider, Context context, LocationListener locationListener){
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+    protected void getLocation(String provider, Context context, LocationListener locationListener) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
 
-            locationManager.requestSingleUpdate(provider,locationListener, null );
+            locationManager.requestSingleUpdate(provider, locationListener, null);
     }
 
-    public Location getLastKnownLocation(){
+    public Location getLastKnownLocation() {
         return location;
     }
 
-    protected double getLatitude(){
-        if(location != null)
-        return location.getLatitude();
+    protected double getLatitude() {
+        if (location != null)
+            return location.getLatitude();
         else
             return POS_CONTROL_VALUE;
     }
 
+    public void stopListener(Context context) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            locationManager.removeUpdates(this);
+    }
 
     protected double getLongitude(){
         if(location != null)
