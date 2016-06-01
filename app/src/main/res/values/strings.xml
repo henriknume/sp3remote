@@ -21,10 +21,6 @@
     <string name="fragment_control">Control</string>
     <string name="fragment_log">Log</string>
 
-
-
-
-
     <!-- Info Fragment text -->
 
     <string name="info_button_text">Info</string>
@@ -76,9 +72,6 @@
     <string name="sync_button_text">Sync</string>
 
 
-
-
-
     <!-- Control Fragment text -->
     <string name="run_auto_button_text">Run Auto</string>
     <string name="toast_run_auto_text">Running auto &#8230;</string>
@@ -88,10 +81,6 @@
     <string name="toast_down_button_text">Tilting down &#8230;</string>
     <string name="toast_stop_button_text">Stopping &#8230;</string>
 
-
-
-
-
     <!-- Log Fragment text -->
     <string name="toggle_log_button_text">Toggle log</string>
     <string name="clear_log_button_text">Clear log</string>
@@ -99,15 +88,14 @@
     <string name="logtextview_default_text">""</string>
 
 
-
-
-
     <!-- Sending Email text -->
     <string name="email_intent">mailto</string>
     <string name="email_recepient_default">emailaddress@thishost.com</string>
     <string name="email_subject_default">SP3 Log Message From: XXX</string>
     <string name="email_text_log">===SP3 REMOTE LOG===</string>
-    <string name="email_send_email">Send email...</string>
+    <string name="email_send_email">Send email&#8230;</string>
+    <string name="email_sp3_lat">Latitude: </string>
+    <string name="email_sp3_lon">Longitude: </string>
 
 
 </resources>

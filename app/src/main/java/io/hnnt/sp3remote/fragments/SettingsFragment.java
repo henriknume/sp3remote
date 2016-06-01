@@ -39,6 +39,7 @@ import io.hnnt.sp3remote.GpsLocation;
 import io.hnnt.sp3remote.R;
 import io.hnnt.sp3remote.events.CommandEvent;
 import io.hnnt.sp3remote.events.SettingsEvent;
+import io.hnnt.sp3remote.model.Sp3Model;
 
 public class SettingsFragment extends Fragment {
 
@@ -93,7 +94,6 @@ public class SettingsFragment extends Fragment {
         syncButton        = (Button)   v.findViewById(R.id.sync_button);
 
         sp3TimeTextView = (TextView) v.findViewById(R.id.sp3_time_field_textview);
-        //sp3DateTextView = (TextView) v.findViewById(R.id.sp3_date_field_textview);
         sp3LatTextView = (TextView) v.findViewById(R.id.sp3_pos_lat_field_textview);
         sp3LonTextView  = (TextView) v.findViewById(R.id.sp3_pos_lon_field_textview);
         phoneLatTextView  = (TextView) v.findViewById(R.id.phone_pos_lat_field_textview);
@@ -101,31 +101,6 @@ public class SettingsFragment extends Fragment {
         syncProgressBar   = (ProgressBar) v.findViewById(R.id.sync_progressbar);
 
         createButtonListeners();
-        gpsLocation = new GpsLocation();
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        Log.d(TAG,"Getting location");
-        if(setPosButtonBoolean)
-            new AsyncLocation().execute("");
 
         return v;
     }
@@ -142,6 +117,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
     }
 
     @Override
@@ -150,21 +126,13 @@ public class SettingsFragment extends Fragment {
 
         super.onResume();
         //getDateAndTime();
-
-        if (!(lat == POS_CONTROL_VALUE) || (lon == POS_CONTROL_VALUE)) {
-                sp3LatTextView.setText("" + lat);
-                sp3LonTextView.setText("" + lon);
-        }
+        upDateView();
     }
 
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
-        if(gpsLocation != null){
-            gpsLocation.stopListener(fcontext);
-            gpsLocation = null;
-        }
         super.onStop();
     }
 
@@ -184,6 +152,7 @@ public class SettingsFragment extends Fragment {
             case SettingsEvent.DATE_VALUE_GET:
                 //Toast.makeText(fcontext, "B." + event.responseData, Toast.LENGTH_SHORT).show();
                 sp3TimeTextView.setText(event.responseData);
+                Sp3Model.setSp3TimeAndDate(event.responseData);
                 break;
             case SettingsEvent.LAT_VALUE_SET:
                 //Toast.makeText(fcontext, "Lat:" + event.responseData, Toast.LENGTH_SHORT).show();
@@ -195,11 +164,13 @@ public class SettingsFragment extends Fragment {
                 /* TODO replace this with a proper sync finished event*/
                 //Toast.makeText(fcontext, "E." + event.responseData, Toast.LENGTH_SHORT).show();
                 sp3LatTextView.setText(event.responseData);
+                Sp3Model.setSp3Lat(event.responseData);
                 //Toast.makeText(fcontext, "Sync finished", Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LON_VALUE_GET:
                 //Toast.makeText(fcontext, "F." + event.responseData, Toast.LENGTH_SHORT).show();
                 sp3LonTextView.setText(event.responseData);
+                Sp3Model.setSp3Lon(event.responseData);
                 break;
             default:
                 //Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
@@ -214,7 +185,6 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "syncButton pressed");
                 syncLocation = true;
-
                 Toast.makeText(fcontext, getString(R.string.toast_syncing_device_start), Toast.LENGTH_SHORT).show();
                 if(setPosButtonBoolean)
                     new AsyncLocation().execute("");
@@ -314,6 +284,22 @@ public class SettingsFragment extends Fragment {
         return result;
     }
 
+    private void upDateView(){
+        sp3TimeTextView.setText(Sp3Model.getSp3TimeAndDate());
+        sp3LatTextView.setText(Sp3Model.getSp3Lat());
+        sp3LonTextView.setText(Sp3Model.getSp3Lon());
+
+        if ((lat != POS_CONTROL_VALUE) && (lon != POS_CONTROL_VALUE)) {
+            Log.d(TAG, "textview is now current pos");
+            phoneLatTextView.setText("" + lat);
+            phoneLonTextView.setText("" + lon);
+        }else{
+            Log.d(TAG, "textview is now empty");
+            phoneLatTextView.setText("");
+            phoneLonTextView.setText("");
+        }
+    }
+
     public class AsyncRetrieveSp3Settings extends AsyncTask{
 
         @Override
@@ -354,6 +340,32 @@ public class SettingsFragment extends Fragment {
 /*
         Fetches the current position using a background thread
 */
+        @Override
+        protected void onPreExecute(){
+                gpsLocation = new GpsLocation();
+                locationListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+                };
+        }
+
         @Override
         protected Object doInBackground(Object[] params) {
             if(Looper.myLooper() == null){
@@ -406,6 +418,13 @@ public class SettingsFragment extends Fragment {
                 phoneLonTextView.setText("" + lon);
             }
             syncLocation = false;
+
+            if(gpsLocation != null){
+                gpsLocation.stopListener(fcontext);
+                gpsLocation = null;
+                locationListener = null;
+                Log.d(TAG, "gpsLocation dead");
+            }
         }
     }
 }
