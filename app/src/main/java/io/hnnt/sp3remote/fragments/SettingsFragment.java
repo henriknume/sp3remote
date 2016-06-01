@@ -1,7 +1,8 @@
 package io.hnnt.sp3remote.fragments;
 
 /**
- * Created by nume on 2016-04-29.
+ * Created by nume on 2016-04-29..
+ * ..
  */
 
 import android.Manifest;
@@ -59,10 +60,16 @@ public class SettingsFragment extends Fragment {
     private double lat = POS_CONTROL_VALUE;
     private double lon = POS_CONTROL_VALUE;
 
-    private TextView timeTextView, dateTextView, latitudeTextView, longitudeTextView;
-    private Button syncButton;
     private ProgressBar syncProgressBar;
+    private Button syncButton;
+    private Button retrieveSettingsButton;
 
+    private TextView sp3TimeTextView;
+    //private TextView sp3DateTextView;
+    private TextView sp3LatTextView;
+    private TextView sp3LonTextView;
+    private TextView phoneLatTextView;
+    private TextView phoneLonTextView;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -82,11 +89,15 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        retrieveSettingsButton = (Button)   v.findViewById(R.id.ret_sp3settings_button);
         syncButton        = (Button)   v.findViewById(R.id.sync_button);
-        timeTextView      = (TextView) v.findViewById(R.id.time_field_textview);
-        dateTextView      = (TextView) v.findViewById(R.id.date_field_textview);
-        latitudeTextView  = (TextView) v.findViewById(R.id.pos_lat_field_textview);
-        longitudeTextView = (TextView) v.findViewById(R.id.pos_lon_field_textview);
+
+        sp3TimeTextView = (TextView) v.findViewById(R.id.sp3_time_field_textview);
+        //sp3DateTextView = (TextView) v.findViewById(R.id.sp3_date_field_textview);
+        sp3LatTextView = (TextView) v.findViewById(R.id.sp3_pos_lat_field_textview);
+        sp3LonTextView  = (TextView) v.findViewById(R.id.sp3_pos_lon_field_textview);
+        phoneLatTextView  = (TextView) v.findViewById(R.id.phone_pos_lat_field_textview);
+        phoneLonTextView  = (TextView) v.findViewById(R.id.phone_pos_lon_field_textview);
         syncProgressBar   = (ProgressBar) v.findViewById(R.id.sync_progressbar);
 
         createButtonListeners();
@@ -114,7 +125,7 @@ public class SettingsFragment extends Fragment {
         };
         Log.d(TAG,"Getting location");
         if(setPosButtonBoolean)
-            new asyncLocation().execute("");
+            new AsyncLocation().execute("");
 
         return v;
     }
@@ -138,11 +149,11 @@ public class SettingsFragment extends Fragment {
         Log.d(TAG, "onResume()");
 
         super.onResume();
-        getDateAndTime();
+        //getDateAndTime();
 
         if (!(lat == POS_CONTROL_VALUE) || (lon == POS_CONTROL_VALUE)) {
-                latitudeTextView.setText("" + lat);
-                longitudeTextView.setText("" + lon);
+                sp3LatTextView.setText("" + lat);
+                sp3LonTextView.setText("" + lon);
         }
     }
 
@@ -167,28 +178,28 @@ public class SettingsFragment extends Fragment {
 
         switch (event.responseType) {
             case SettingsEvent.DATE_VALUE_SET:
-                syncProgressBar.setProgress(33);
+                //syncProgressBar.setProgress(33);
                 //Toast.makeText(fcontext, "Time: " + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.DATE_VALUE_GET:
                 //Toast.makeText(fcontext, "B." + event.responseData, Toast.LENGTH_SHORT).show();
+                sp3TimeTextView.setText(event.responseData);
                 break;
             case SettingsEvent.LAT_VALUE_SET:
-                syncProgressBar.setProgress(66);
                 //Toast.makeText(fcontext, "Lat:" + event.responseData, Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LON_VALUE_SET:
                 //Toast.makeText(fcontext, "Lon:" + event.responseData, Toast.LENGTH_SHORT).show();
-                syncProgressBar.setProgress(100);
                 break;
             case SettingsEvent.LAT_VALUE_GET:
                 /* TODO replace this with a proper sync finished event*/
                 //Toast.makeText(fcontext, "E." + event.responseData, Toast.LENGTH_SHORT).show();
-                Toast.makeText(fcontext, "Sync finished", Toast.LENGTH_SHORT).show();
-                syncProgressBar.setProgress(0);
+                sp3LatTextView.setText(event.responseData);
+                //Toast.makeText(fcontext, "Sync finished", Toast.LENGTH_SHORT).show();
                 break;
             case SettingsEvent.LON_VALUE_GET:
                 //Toast.makeText(fcontext, "F." + event.responseData, Toast.LENGTH_SHORT).show();
+                sp3LonTextView.setText(event.responseData);
                 break;
             default:
                 //Toast.makeText(fcontext, "PARSE ERROR", Toast.LENGTH_SHORT).show();
@@ -202,20 +213,25 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "syncButton pressed");
-                syncProgressBar.setProgress(10);
                 syncLocation = true;
 
                 Toast.makeText(fcontext, getString(R.string.toast_syncing_device_start), Toast.LENGTH_SHORT).show();
                 if(setPosButtonBoolean)
-                new asyncLocation().execute("");
-
-                getDateAndTime();
+                    new AsyncLocation().execute("");
 
                 EventBus.getDefault()
-                        .post(new CommandEvent("date " + dateTextView.getText().toString() + " " + timeTextView.getText().toString(),
+                        .post(new CommandEvent("date " + getFormattedPhoneDateAndTime(),
                                 CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
                                 CommandEvent.TARGET_SETTINGS_FRAGMENT));
                 //Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        retrieveSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "retrieveSettings button pressed");
+                new AsyncRetrieveSp3Settings().execute("");
             }
         });
     }
@@ -269,7 +285,8 @@ public class SettingsFragment extends Fragment {
 /*
         Getting date and time in UTC format from the device.
  */
-    public void getDateAndTime() {
+    /*
+    public void String[] getDateAndTime() {
         String[] dateTime = new String[2];
 
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -282,9 +299,57 @@ public class SettingsFragment extends Fragment {
         dateTextView.setText(dateTime[0]);
         timeTextView.setText(dateTime[1]);
     }
+    */
 
 
-    public class asyncLocation extends AsyncTask{
+    /*
+        Getting date and time in UTC format from the device.
+    */
+    private String getFormattedPhoneDateAndTime() {
+        String result;
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        myFormat.setTimeZone(TimeZone.getTimeZone("utc"));
+        Date date = new Date();
+        result = myFormat.format(date);
+        return result;
+    }
+
+    public class AsyncRetrieveSp3Settings extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            if(Looper.myLooper() == null){
+                Looper.prepare();
+            }
+
+            EventBus.getDefault().post(new CommandEvent("date",
+                    CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                    CommandEvent.TARGET_SETTINGS_FRAGMENT));
+
+            try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
+
+            EventBus.getDefault().post(new CommandEvent("lat",
+                    CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                    CommandEvent.TARGET_SETTINGS_FRAGMENT));
+
+            try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
+
+            EventBus.getDefault().post(new CommandEvent("lon",
+                    CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                    CommandEvent.TARGET_SETTINGS_FRAGMENT));
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            Log.d(TAG, "retrieveSettings_onPostExec");
+        }
+    }
+
+
+    public class AsyncLocation extends AsyncTask{
 
 /*
         Fetches the current position using a background thread
@@ -337,8 +402,8 @@ public class SettingsFragment extends Fragment {
                 Log.d(TAG, "Position NOT updated");
             } else {
                 Log.d(TAG, "Position updated");
-                latitudeTextView.setText("" + lat);
-                longitudeTextView.setText("" + lon);
+                phoneLatTextView.setText("" + lat);
+                phoneLonTextView.setText("" + lon);
             }
             syncLocation = false;
         }
