@@ -23,6 +23,10 @@ public class Sp3Model {
     private static String infoToMail;
     private static String date;
 
+    private static String sp3Lat = "";
+    private static String sp3Lon = "";
+    private static String sp3TimeAndDate ="";
+
     private static ArrayList<LogItem> logItemList;
 
     public static ArrayList<LogItem> getLogItemList() {
@@ -165,5 +169,20 @@ public class Sp3Model {
         return date;
     }
 
+    public static void setSp3Lat(String input){ sp3Lat = input; }
+
+    public static String getSp3Lat(){ return sp3Lat; }
+
+    public static void setSp3Lon(String input){ sp3Lon = input; }
+
+    public static String getSp3Lon(){ return sp3Lon; }
+
+    public static void setSp3TimeAndDate(String input){
+        sp3TimeAndDate = input;
+    }
+
+    public static String getSp3TimeAndDate(){
+        return sp3TimeAndDate;
+    }
 
 }

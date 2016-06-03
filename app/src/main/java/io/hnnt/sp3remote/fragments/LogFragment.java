@@ -163,10 +163,10 @@ public class LogFragment extends Fragment{
         emailIntent.putExtra(Intent.EXTRA_TEXT,
                   Sp3Model.getDate()
                 +"\n\n"
-                + Sp3Model.getInfoToMail()
-                +"\n"
-                + getString(R.string.email_text_log)
-                +"\n"
+                + getString(R.string.email_sp3_lon) + Sp3Model.getSp3Lon() + "\n"
+                + getString(R.string.email_sp3_lat) + Sp3Model.getSp3Lat() + "\n"
+                + Sp3Model.getInfoToMail() + "\n"
+                + getString(R.string.email_text_log) +"\n"
                 + Sp3Model.getLogEmailFormatted()
         );
 
