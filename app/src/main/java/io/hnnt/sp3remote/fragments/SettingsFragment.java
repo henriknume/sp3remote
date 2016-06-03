@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 
 import io.hnnt.sp3remote.GpsLocation;
 import io.hnnt.sp3remote.R;
@@ -72,6 +73,9 @@ public class SettingsFragment extends Fragment {
     private TextView phoneLatTextView;
     private TextView phoneLonTextView;
 
+    private AsyncLocation asyncLocation;
+    private AsyncRetrieveSp3Settings asyncRetrieveSp3Settings;
+
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -91,14 +95,14 @@ public class SettingsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
         retrieveSettingsButton = (Button)   v.findViewById(R.id.ret_sp3settings_button);
-        syncButton        = (Button)   v.findViewById(R.id.sync_button);
+        syncButton             = (Button)   v.findViewById(R.id.sync_button);
 
-        sp3TimeTextView = (TextView) v.findViewById(R.id.sp3_time_field_textview);
-        sp3LatTextView = (TextView) v.findViewById(R.id.sp3_pos_lat_field_textview);
-        sp3LonTextView  = (TextView) v.findViewById(R.id.sp3_pos_lon_field_textview);
-        phoneLatTextView  = (TextView) v.findViewById(R.id.phone_pos_lat_field_textview);
-        phoneLonTextView  = (TextView) v.findViewById(R.id.phone_pos_lon_field_textview);
-        syncProgressBar   = (ProgressBar) v.findViewById(R.id.sync_progressbar);
+        sp3TimeTextView        = (TextView) v.findViewById(R.id.sp3_time_field_textview);
+        sp3LatTextView         = (TextView) v.findViewById(R.id.sp3_pos_lat_field_textview);
+        sp3LonTextView         = (TextView) v.findViewById(R.id.sp3_pos_lon_field_textview);
+        phoneLatTextView       = (TextView) v.findViewById(R.id.phone_pos_lat_field_textview);
+        phoneLonTextView       = (TextView) v.findViewById(R.id.phone_pos_lon_field_textview);
+        syncProgressBar        = (ProgressBar) v.findViewById(R.id.sync_progressbar);
 
         createButtonListeners();
 
@@ -184,16 +188,21 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "syncButton pressed");
-                syncLocation = true;
-                Toast.makeText(fcontext, getString(R.string.toast_syncing_device_start), Toast.LENGTH_SHORT).show();
-                if(setPosButtonBoolean)
-                    new AsyncLocation().execute("");
 
-                EventBus.getDefault()
-                        .post(new CommandEvent("date " + getFormattedPhoneDateAndTime(),
-                                CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
-                                CommandEvent.TARGET_SETTINGS_FRAGMENT));
-                //Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
+                if ((asyncLocation.getStatus() != AsyncLocation.Status.RUNNING) &&
+                        (asyncRetrieveSp3Settings.getStatus() != AsyncRetrieveSp3Settings.Status.RUNNING)) {
+                    syncLocation = true;
+                    Toast.makeText(fcontext, getString(R.string.toast_syncing_device_start), Toast.LENGTH_SHORT).show();
+                    if (setPosButtonBoolean)
+                        new AsyncLocation().execute("");
+
+
+                    EventBus.getDefault()
+                            .post(new CommandEvent("date " + getFormattedPhoneDateAndTime(),
+                                    CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                                    CommandEvent.TARGET_SETTINGS_FRAGMENT));
+                    //Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -201,7 +210,12 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "retrieveSettings button pressed");
-                new AsyncRetrieveSp3Settings().execute("");
+                if ((asyncLocation.getStatus() != AsyncLocation.Status.RUNNING) &&
+                        (asyncRetrieveSp3Settings.getStatus() != AsyncRetrieveSp3Settings.Status.RUNNING)) {
+                    new AsyncRetrieveSp3Settings().execute("");
+                }else {
+                    Log.d(TAG, "ITS WORKING!!!!!!!!");
+                }
             }
         });
     }
