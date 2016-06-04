@@ -53,7 +53,6 @@ public class SettingsFragment extends Fragment {
 
     public Context fcontext;
 
-    protected Boolean syncLocation = false;
     protected Boolean setPosButtonBoolean = true;
     protected GpsLocation gpsLocation;
     protected LocationListener locationListener;
@@ -72,9 +71,7 @@ public class SettingsFragment extends Fragment {
     private TextView sp3LonTextView;
     private TextView phoneLatTextView;
     private TextView phoneLonTextView;
-
-    private AsyncLocation asyncLocation;
-    private AsyncRetrieveSp3Settings asyncRetrieveSp3Settings;
+    private Boolean  buttonAvailable = true;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -113,7 +110,6 @@ public class SettingsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart()");
-
         EventBus.getDefault().register(this);
 
     }
@@ -127,9 +123,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onResume() {
         Log.d(TAG, "onResume()");
-
         super.onResume();
-        //getDateAndTime();
         upDateView();
     }
 
@@ -189,19 +183,13 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "syncButton pressed");
 
-                if ((asyncLocation.getStatus() != AsyncLocation.Status.RUNNING) &&
-                        (asyncRetrieveSp3Settings.getStatus() != AsyncRetrieveSp3Settings.Status.RUNNING)) {
-                    syncLocation = true;
-                    Toast.makeText(fcontext, getString(R.string.toast_syncing_device_start), Toast.LENGTH_SHORT).show();
-                    if (setPosButtonBoolean)
-                        new AsyncLocation().execute("");
-
-
-                    EventBus.getDefault()
-                            .post(new CommandEvent("date " + getFormattedPhoneDateAndTime(),
-                                    CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
-                                    CommandEvent.TARGET_SETTINGS_FRAGMENT));
+                Toast.makeText(fcontext, getString(R.string.toast_syncing_device_start), Toast.LENGTH_SHORT).show();
+                if (setPosButtonBoolean && buttonAvailable) {
+                    buttonAvailable = false;
+                    new AsyncLocation().execute("");
                     //Toast.makeText(fcontext, getString(R.string.toast_syncing_device_finish), Toast.LENGTH_SHORT).show();
+                }else{
+                    Log.d(TAG, "AsyncLocation is currently running");
                 }
             }
         });
@@ -210,11 +198,11 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "retrieveSettings button pressed");
-                if ((asyncLocation.getStatus() != AsyncLocation.Status.RUNNING) &&
-                        (asyncRetrieveSp3Settings.getStatus() != AsyncRetrieveSp3Settings.Status.RUNNING)) {
+                if (buttonAvailable) {
+                    buttonAvailable = false;
                     new AsyncRetrieveSp3Settings().execute("");
                 }else {
-                    Log.d(TAG, "ITS WORKING!!!!!!!!");
+                    Log.d(TAG, "AsyncRetrieveSp3Settings is currently running");
                 }
             }
         });
@@ -344,6 +332,7 @@ public class SettingsFragment extends Fragment {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+            buttonAvailable = true;
             Log.d(TAG, "retrieveSettings_onPostExec");
         }
     }
@@ -351,13 +340,10 @@ public class SettingsFragment extends Fragment {
 
     public class AsyncLocation extends AsyncTask{
 
-/*
-        Fetches the current position using a background thread
-*/
         @Override
         protected void onPreExecute(){
-                gpsLocation = new GpsLocation();
-                locationListener = new LocationListener() {
+            gpsLocation = new GpsLocation();
+            locationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
 
@@ -397,20 +383,11 @@ public class SettingsFragment extends Fragment {
                 lat = location.getLatitude();
                 lon = location.getLongitude();
             }
-
-            if (syncLocation) {
-                try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
-                if(lat != POS_CONTROL_VALUE){
-                    EventBus.getDefault().post(new CommandEvent("lat " + lat,
-                            CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
-                            CommandEvent.TARGET_SETTINGS_FRAGMENT));
-                }
-                try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
-                if(lon != POS_CONTROL_VALUE){
-                    EventBus.getDefault().post(new CommandEvent("lon " + lon,
-                            CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
-                            CommandEvent.TARGET_SETTINGS_FRAGMENT));
-                }
+            if(gpsLocation != null) {
+                gpsLocation.stopListener(fcontext);
+                gpsLocation = null;
+                locationListener = null;
+                Log.d(TAG, "gpsLocation dead");
             }
             return null;
         }
@@ -422,7 +399,6 @@ public class SettingsFragment extends Fragment {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-
             if ((lat == POS_CONTROL_VALUE) || (lon == POS_CONTROL_VALUE)) {
                 Toast.makeText(fcontext, getString(R.string.toast_position_not_valid), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Position NOT updated");
@@ -431,14 +407,39 @@ public class SettingsFragment extends Fragment {
                 phoneLatTextView.setText("" + lat);
                 phoneLonTextView.setText("" + lon);
             }
-            syncLocation = false;
-
-            if(gpsLocation != null){
-                gpsLocation.stopListener(fcontext);
-                gpsLocation = null;
-                locationListener = null;
-                Log.d(TAG, "gpsLocation dead");
-            }
+            new AsyncSyncSp3().execute();
         }
+    }
+    public class AsyncSyncSp3 extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
+            if(lat != POS_CONTROL_VALUE){
+                EventBus.getDefault().post(new CommandEvent("lat " + lat,
+                        CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                        CommandEvent.TARGET_SETTINGS_FRAGMENT));
+            }
+            try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
+            if(lon != POS_CONTROL_VALUE){
+                EventBus.getDefault().post(new CommandEvent("lon " + lon,
+                        CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                        CommandEvent.TARGET_SETTINGS_FRAGMENT));
+            }
+            try {Thread.sleep(POST_EVENT_SLEEP_TIME);} catch (InterruptedException e) {e.printStackTrace();}
+            EventBus.getDefault()
+                    .post(new CommandEvent("date " + getFormattedPhoneDateAndTime(),
+                            CommandEvent.RESPONSE_TYPE_SETTINGSEVENT,
+                            CommandEvent.TARGET_SETTINGS_FRAGMENT));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            Log.d(TAG, "Sync complete");
+            buttonAvailable = true;
+        }
+
+
     }
 }
