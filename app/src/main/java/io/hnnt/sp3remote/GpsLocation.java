@@ -34,7 +34,7 @@ public class GpsLocation implements LocationListener {
         location = myLocation;
     }
 
-    protected void getLocation(String provider, Context context, LocationListener locationListener) {
+    private void getLocation(String provider, Context context, LocationListener locationListener) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
 
             locationManager.requestSingleUpdate(provider, locationListener, null);
